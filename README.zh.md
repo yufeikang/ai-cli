@@ -28,7 +28,7 @@ ai --no-stream ask "你好"
 ai ask --help
 ```
 
- ![]("./_/video/ask.gif")
+![](./_/video/ask.gif)
 
 翻译
 
@@ -40,7 +40,7 @@ echo "你好" | ai translate -t english
 cat "file.txt" | ai translate -t english
 ```
 
- ![]("./_/video/translate.gif")
+ ![](./_/video/translate.gif)
 
 聊天
 
@@ -48,7 +48,7 @@ cat "file.txt" | ai translate -t english
 ai chat
 ```
 
- ![]("./_/video/chat.gif")
+ ![](./_/video/chat.gif)
 
 ## 依赖
 

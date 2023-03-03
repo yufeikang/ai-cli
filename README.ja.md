@@ -1,12 +1,13 @@
 
-# chatGPTのAIツール
 
-> このCLIツールを使用すれば、コマンドライン上で簡単にchatGPTを使用できます。AIとチャットをすることができ、質問の回答を支援することもできま
-す。また、テキストの翻訳もサポートしています。さらに、マークダウンのテキストも終端でレンダリングすることができます。
+# chatGPT用のAIツール
+
+> このCLIツールを使用すると、コマンドラインでchatGPTを簡単に使用できます。チャットをしたり、質問に答えたり、テキストを翻訳したりすることができます。
+また、ターミナル内でMarkdownをレンダリングすることもできます。
 
 [中文](README.zh.md) | [English](README.md) | [日本語](README.ja.md)
 
-## クイックスタート（インストール不要）
+## クイックスタート(インストール不要)
 
 ```bash
 curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai.py -L -s | python - ask "こんにちは"
@@ -31,7 +32,7 @@ ai --no-stream ask "こんにちは"
 ai ask --help
 ```
 
- ![]("./_/video/ask.gif")
+![](./_/video/ask.gif)
 
 翻訳
 
@@ -43,7 +44,7 @@ echo "こんにちは" | ai translate -t english
 cat "file.txt" | ai translate -t english
 ```
 
- ![]("./_/video/translate.gif")
+ ![](./_/video/translate.gif)
 
 チャット
 
@@ -51,12 +52,10 @@ cat "file.txt" | ai translate -t english
 ai chat
 ```
 
- ![]("./_/video/chat.gif")
+ ![](./_/video/chat.gif)
 
-## 必要条件
+## 依存関係
 
 ```bash
 pip install rich openai
 ```
-
- 上記の内容を日本語に翻訳してください。
