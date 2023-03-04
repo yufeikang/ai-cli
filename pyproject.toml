@@ -1,0 +1,91 @@
+[tool.pdm]
+
+[project]
+name = "ai_cli"
+version = "0.1.0"
+description = "This CLI tool allows you to easily chat with chatGPT in the command line. You can chat with it, ask questions, and even translate text. It also"
+authors = [
+    {name = "Yufei Kang", email = "kou.uhi.x@gmail.com"},
+]
+dependencies = [
+    "rich>=13.3.1",
+    "openai>=0.27.0",
+    "pysocks>=1.7.1",
+]
+requires-python = ">=3.8"
+readme = "README.zh.md"
+license = {text = "MIT"}
+
+[project.urls]
+Repository="https://github.com/yufeikang/ai-cli"
+Documentation="https://github.com/yufeikang/ai-cli/blob/main/README.md"
+
+[build-system]
+requires = ["pdm-pep517>=1.0"]
+build-backend = "pdm.pep517.api"
+
+[tool.pdm.build]
+excludes = [".git"]
+package-dir = "."
+includes = ["ai_cli"]
+source-includes = ["tests", "CHANGELOG.md", "LICENSE", "README.md"]
+# editables backend doesn't work well with namespace packages
+editable-backend = "path"
+
+[project.scripts]
+ai = "ai_cli.cli:cli"
+
+[tool.pdm.dev-dependencies]
+test = [
+    "pdm[pytest]",
+    "pytest-cov",
+    "pytest-xdist>=1.31.0",
+    "pytest-rerunfailures>=10.2",
+]
+tox = [
+    "tox",
+    "tox-pdm>=0.5",
+]
+doc = [
+    "mkdocs>=1.1",
+    "mkdocs-material>=7.3",
+    "mkdocstrings[python]>=0.18",
+    "markdown-include>=0.5.1",
+    "mike>=1.1.2",
+    "setuptools>=62.3.3",
+    "markdown-exec>=0.7.0",
+]
+workflow = [
+    "pdm-pep517>=1.0.0,<2.0.0",
+    "parver>=0.3.1",
+    "towncrier>=20",
+    "pycomplete~=0.3"
+]
+
+[tool.black]
+line-length = 120
+target-version = ["py37", "py38", "py39", "py310"]
+
+
+[tool.ruff]
+line-length = 120
+select = [
+  "B",    # flake8-bugbear
+  "C4",   # flake8-comprehensions
+  "E",    # pycodestyle
+  "F",    # pyflakes
+  "PGH",  # pygrep-hooks
+  "RUF",  # ruff
+  "W",    # pycodestyle
+  "W",    # pycodestyle
+  "YTT",  # flake8-2020
+]
+extend-ignore = ["B019"]
+src = ["."]
+target-version = "py37"
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.isort]
+known-first-party = ["ai-cli"]
