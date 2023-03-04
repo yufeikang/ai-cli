@@ -70,6 +70,14 @@ parser.add_argument(
     choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
     help="the log level to use, defaults to INFO",
 )
+parser.add_argument(
+    "--proxy",
+    "-p",
+    dest="proxy",
+    type=str,
+    nargs="?",
+    help="the proxy to use, if env var HTTP_PROXY/HTTPS+PROXY/SOCKS_PROXY/ALL_PROXY is set, this will default to that. When use socks proxy. you need install pysocks first. pip install pysocks",
+)
 
 command_parser = parser.add_subparsers(dest="command", help="command to run")
 
@@ -126,6 +134,28 @@ elif "OPENAI_API_KEY" in os.environ:
 else:
     openai.api_key = Prompt.ask("OpenAI API Key", password=True)
 
+proxy = None
+if args.proxy:
+    proxy = args.proxy
+elif "HTTP_PROXY" in os.environ:
+    proxy = os.environ["HTTP_PROXY"]
+elif "HTTPS_PROXY" in os.environ:
+    proxy = os.environ["HTTPS_PROXY"]
+elif "SOCKS_PROXY" in os.environ:
+    proxy = os.environ["SOCKS_PROXY"]
+elif "ALL_PROXY2" in os.environ:
+    proxy = os.environ["ALL_PROXY2"]
+
+
+if proxy:
+    openai.proxy = proxy
+    if proxy.startswith('socks'):
+        logger.debug("using socks proxy: %s", proxy)
+        try:
+            import socks
+        except ImportError:
+            print("Please install pysocks: pip install pysocks")
+            exit(1)
 
 def _print(text, render):
     content = text
@@ -258,10 +288,7 @@ def main():
     if command in CMD:
         CMD[command]()
     else:
-        cmd = Prompt(
-            "Please enter a command", choices=["ask", "chat", "translate", "help"]
-        )
-        CMD[cmd]()
+        parser.print_help()
 
 
 if __name__ == "__main__":
