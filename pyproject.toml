@@ -1,5 +1,5 @@
 [tool.pdm]
-version = { source = "file", path = "ai_cli/__version__.py" }
+version = { source = "file", path = "ai_cli/__init__.py" }
 
 [project]
 name = "ai_cli"
