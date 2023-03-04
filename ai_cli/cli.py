@@ -152,7 +152,7 @@ if args.debug:
 else:
     logging.basicConfig()
     logger.setLevel(args.log_level)
-    
+
 if args.api_key:
     openai.api_key = args.api_key
 elif "OPENAI_API_KEY" in os.environ:
@@ -175,7 +175,7 @@ elif "ALL_PROXY" in os.environ:
 
 if proxy:
     openai.proxy = proxy
-    if proxy.startswith('socks'):
+    if proxy.startswith("socks"):
         logger.debug("using socks proxy: %s", proxy)
         try:
             import socks
@@ -189,6 +189,7 @@ if args.endpoint:
 elif "OPENAI_API_BASE" in os.environ:
     logger.debug("using endpoint: %s", os.environ["OPENAI_API_BASE"])
     openai.api_base = os.environ["OPENAI_API_BASE"]
+
 
 def _print(text, render):
     content = text
@@ -223,11 +224,7 @@ def ask(question, stream=False):
             logger.debug("asking question: %s", question)
             response = _ask(question, stream=stream)
             for v in response:
-                if (
-                    v.choices
-                    and "content" in v.choices[0].delta
-                    and v.choices[0].delta.content
-                ):
+                if v.choices and "content" in v.choices[0].delta and v.choices[0].delta.content:
                     content += v.choices[0].delta.content
                     _print(content, live.update)
     else:
@@ -262,9 +259,7 @@ def _get_text_from_clipboard():
 
         return pyperclip.paste()
     except ImportError:
-        logger.error(
-            "pyperclip is not installed, please install it use: pip install pyperclip"
-        )
+        logger.error("pyperclip is not installed, please install it use: pip install pyperclip")
         exit(0)
     except Exception as e:
         logger.error("error getting text from clipboard: %s", e)
@@ -324,10 +319,14 @@ def main():
         parser.print_help()
 
 
-if __name__ == "__main__":
+def cli():
     try:
         logger.debug(f"args: {args}")
         main()
     except KeyboardInterrupt:
         console.print("\n[bold red]Exiting...[/bold red]")
         exit(0)
+
+
+if __name__ == "__main__":
+    cli()
