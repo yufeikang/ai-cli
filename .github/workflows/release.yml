@@ -29,8 +29,9 @@ jobs:
       - name: Build artifacts
         run: |
           python -m build --sdist --wheel .
-          # get version from ai_cli/__version__.py
-          export VERSION=$(python -c "import ai_cli; print(ai_cli.__version__)")
+          version=$(python -c "import ai_cli; print(ai_cli.__version__)")
+          echo "VERSION=${version}" >> $GITHUB_ENV
+
       # - name: Publish distribution 📦 to PyPI
       #   if: startsWith(github.ref, 'refs/tags')
       #   uses: pypa/gh-action-pypi-publish@release/v1
@@ -53,5 +54,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./dist/ai_cli-${{ VERSION }}-py3-none-any.whl
-          asset_name: ${{ github.event.repository.name }}-${{ VERSION }}.whl
+          asset_path: ./dist/ai_cli-${{ env.VERSION }}-py3-none-any.whl
+          asset_name: ${{ github.event.repository.name }}-${{ env.VERSION }}.whl
