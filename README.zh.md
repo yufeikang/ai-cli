@@ -75,3 +75,6 @@ export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
 socks5代理需要安装`pip install pysocks`
+
+* OPENAI_API_KEY
+可以设定环境变量`OPENAI_API_KEY`，也可以通过`--api-key`参数指定。

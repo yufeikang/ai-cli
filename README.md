@@ -1,14 +1,16 @@
+
+
 # AI Tools for chatGPT
 
-This CLI tool allows you to easily use chatGPT in the command line. You can chat with it and have it help you answer questions. It can also 
-translate text for you, and supports rendering markdown in the terminal.
+This CLI tool allows you to easily use chatGPT in the command line. You can chat with it, ask it questions, and get text translations. It also 
+supports rendering Markdown in the terminal.
 
 [中文](README.zh.md) | [English](README.md) | [日本語](README.ja.md)
 
-## Quick Start (No installation required)
+## Quick Start (No Installation Required)
 
 ```bash
-curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai.py -L -s | python - ask "Hello"
+curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai.py -L -s | python - ask "hello"
 ```
 
 ## Installation
@@ -20,12 +22,12 @@ openai
 
 ## Usage
 
-Ask questions
+Ask Questions
 
 ```bash
-ai ask "Hello"
+ai ask "hello"
 # no stream mode
-ai --no-stream ask "Hello"
+ai --no-stream ask "hello"
 # help
 ai ask --help
 ```
@@ -35,14 +37,14 @@ ai ask --help
 Translation
 
 ```bash
-ai translate "Hello"
-ai translate "Hello" -t japanese
+ai translate "hello"
+ai translate "hello" -t japanese
 ai translate -t english -f "file.txt"
-echo "Hello" | ai translate -t english
+echo "hello" | ai translate -t english
 cat "file.txt" | ai translate -t english
 ```
 
-![](./_/video/translate.gif)
+ ![](./_/video/translate.gif)
 
 Chat
 
@@ -50,7 +52,7 @@ Chat
 ai chat
 ```
 
-![](./_/video/chat.gif)
+ ![](./_/video/chat.gif)
 
 ## Dependencies
 
@@ -60,7 +62,7 @@ pip install rich openai
 
 * Proxy Support
 
-Supports the `HTTP_PROXY` and `HTTPS_PROXY` environment variables or `ALL_PROXY`. You can also specify a proxy using the `--proxy` parameter.
+Supports `HTTP_PROXY` and `HTTPS_PROXY` or `ALL_PROXY` environment variables. You can also specify a proxy with the `--proxy` parameter.
 
 For example:
 
@@ -70,10 +72,14 @@ export HTTPS_PROXY=http://x.x.x.x:xxxx
 export ALL_PROXY=http://x.x.x.x:xxxx
 ```
 
-Also, supports SOCKS5 proxy, for example:
+SOCKS5 proxies are also supported, for example:
 
 ```bash
 export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
-SOCKS5 proxy requires `pip install pysocks`.
+SOCKS5 proxies require `pip install pysocks`.
+
+* OPENAI_API_KEY
+
+You can set the `OPENAI_API_KEY` environment variable, or pass it in with the `--api-key` parameter.

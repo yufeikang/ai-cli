@@ -1,16 +1,16 @@
 
 
-# chatGPTのAIツール
+# AIツールのチャットGPT
 
-このCLIツールを使用すると、コマンドラインで簡単にchatGPTを使用できます。会話したり、質問に答えてもらったり、テキストを翻訳したりできます。また、ター
-ミナルでのMarkdownのレンダリングをサポートしています。
+このCLIツールは、コマンドラインでchatGPTを簡単に使用できるようにするものです。チャットすることも、質問に答えてもらうこともできます。また、
+テキストの翻訳も手伝ってくれます。そして、ターミナルでのマークダウンのレンダリングもサポートしています。
 
-[中文](README.zh.md) | [English](README.md) | [日本語](README.ja.md)
+[中国語](README.zh.md) | [英語](README.md) | [日本語](README.ja.md)
 
-## クイックスタート（インストール不要）
+## クイックスタート（インストールなし）
 
 ```bash
-curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai.py -L -s | python - ask "Hello"
+curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai.py -L -s | python - ask "こんにちは"
 ```
 
 ## インストール
@@ -20,15 +20,15 @@ curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai.py -L -s> /usr/l
 openai
 ```
 
-## 使い方
+## 使用法
 
 質問する
 
 ```bash
-ai ask "Hello"
-# no stream mode
-ai --no-stream ask "Hello"
-# help
+ai ask "こんにちは"
+# サポートされていないストリームモード
+ai --no-stream ask "こんにちは"
+# ヘルプ
 ai ask --help
 ```
 
@@ -38,13 +38,13 @@ ai ask --help
 
 ```bash
 ai translate "こんにちは"
-ai translate "こんにちは" -t chinese
+ai translate "こんにちは" -t japanese
 ai translate -t english -f "file.txt"
 echo "こんにちは" | ai translate -t english
 cat "file.txt" | ai translate -t english
 ```
 
- ![](./_/video/translate.gif)
+![](./_/video/translate.gif)
 
 チャット
 
@@ -52,19 +52,19 @@ cat "file.txt" | ai translate -t english
 ai chat
 ```
 
- ![](./_/video/chat.gif)
+![](./_/video/chat.gif)
 
-## 依存関係
+## 必要条件
 
 ```bash
 pip install rich openai
 ```
 
-* プロキシーサポート
+* プロキシサポート
 
-環境変数`HTTP_PROXY`および`HTTPS_PROXY`または`ALL_PROXY`がサポートされています。プロキシを指定するには、`--proxy`パラメーターを使用できます。
+環境変数`HTTP_PROXY`および`HTTPS_PROXY`または`ALL_PROXY`をサポートしています。`--proxy`パラメータを使用してプロキシを指定することもできます。
 
-例：
+たとえば：
 
 ```bash
 export HTTP_PROXY=http://x.x.x.x:xxxx
@@ -72,10 +72,14 @@ export HTTPS_PROXY=http://x.x.x.x:xxxx
 export ALL_PROXY=http://x.x.x.x:xxxx
 ```
 
-SOCKS5プロキシもサポートされています。例えば：
+SOCKS5プロキシもサポートしています。たとえば：
 
 ```bash
 export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
-SOCKS5プロキシを使用するには、`pip install pysocks`をインストールする必要があります。
+SOCKS5プロキシを使用するには、 `pip install pysocks`をインストールする必要があります。
+
+* OPENAI_API_KEY
+
+環境変数`OPENAI_API_KEY`を設定することができます。また、`--api-key`パラメータを使用して指定することもできます。
