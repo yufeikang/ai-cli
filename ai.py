@@ -143,14 +143,16 @@ translate_parser.add_argument(
 )
 
 args = parser.parse_args()
-logging.basicConfig()
 logger = logging.getLogger("cli")
-logger.setLevel(args.log_level)
+
 if args.debug:
     logging.basicConfig(level=logging.DEBUG)
     logger.setLevel("DEBUG")
     logger.debug("debug mode enabled")
-
+else:
+    logging.basicConfig()
+    logger.setLevel(args.log_level)
+    
 if args.api_key:
     openai.api_key = args.api_key
 elif "OPENAI_API_KEY" in os.environ:
