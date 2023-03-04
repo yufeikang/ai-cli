@@ -30,7 +30,7 @@ jobs:
         run: |
           python -m build --sdist --wheel .
           # get version from ai_cli/__version__.py
-          VERSION=$(python -c "import ai_cli; print(ai_cli.__version__)")
+          export VERSION=$(python -c "import ai_cli; print(ai_cli.__version__)")
       # - name: Publish distribution 📦 to PyPI
       #   if: startsWith(github.ref, 'refs/tags')
       #   uses: pypa/gh-action-pypi-publish@release/v1
