@@ -7,16 +7,10 @@
 ## 快速体验(无需安装)
 
 ```bash
-curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai.py -L -s | python - ask "你好"
+curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai_cli/cli.py -L -s | python - ask "你好"
 ```
 
 ## 依赖
-
-* 安装依赖
-
-```bash
-pip install rich openai
-```
 
 * OPENAI_API_BASE (可选)
 
@@ -30,7 +24,7 @@ pip install rich openai
 ## 安装
 
 ```bash
-curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai.py -L -s> /usr/local/bin/ai && chmod +x /usr/local/bin/ai && pip install -U rich openai
+pip install https://github.com/yufeikang/ai-cli/releases/download/v0.0.1/ai_cli-0.0.1-py3-none-any.whl
 ```
 
 ## 使用

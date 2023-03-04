@@ -1,49 +1,42 @@
-# chatGPT的AI工具
 
-このCLIツールは、コマンドラインでchatGPTを簡単に使用できます。チャットしたり、質問に答えたり、テキストを翻訳したりすることができます。ターミナルで
-のMarkdownのレンダリングをサポートしています。
+
+# chatGPT用のAIツール
+
+このCLIツールは、コマンドラインでchatGPTを簡単に使用できるようにします。チャットをしたり、質問に答えたり、テキストを翻訳したりすることができます。また、ターミナルでのMarkdownのレンダリングをサポートしています。
 
 [中文](README.zh.md) | [English](README.md) | [日本語](README.ja.md)
 
-## クイックスタート(インストール不要)
+## クイック体験（インストール不要）
 
 ```bash
-curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai.py -L -s | python - ask "こんにちは"
+curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai_cli/cli.py -L -s | python - ask "こんにちは"
 ```
 
 ## 依存関係
 
-* 依存関係のインストール
+* OPENAI_API_BASE（オプション）
 
-```bash
-pip install rich openai
-```
+GFWの問題により、`https://api.openai.com`にアクセスできない場合は、`OPENAI_API_BASE`環境変数を使用して別のAPIアドレスを指定できます。この方法をお勧めします。プロキシを使用する方法よりも安定しています。 
 
-* OPENAI_API_BASE(オプション)
-
-GFWの原因により`https://api.openai.com`にアクセスできない場合、他のAPIアドレスを`OPENAI_API_BASE`環境変数で指定できます。
-この方法を使用することをお勧めします。これは、プロキシを使用する方法よりも安定しています。
-Cloudflare Workersを使用してプロキシを作成する方法については、次の記事を参照してください：[使用Cloudflare Workers搭建OpenAI 
-API代理](https://github.com/noobnooc/noobnooc/discussions/9)
+Cloudflare Workersを使用して代理を構築する方法については、次の記事を参照してください：[使用Cloudflare Workers搭建OpenAI API代理](https://github.com/noobnooc/noobnooc/discussions/9)
 
 * OPENAI_API_KEY
 
-環境変数`OPENAI_API_KEY`を設定することができます。`--api-key`パラメータを指定することもできます。
+`OPENAI_API_KEY`環境変数を設定するか、`--api-key`パラメーターを使用して指定できます。
 
 ## インストール
 
 ```bash
-curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai.py -L -s> /usr/local/bin/ai && chmod +x /usr/local/bin/ai && pip install -U rich 
-openai
+pip install https://github.com/yufeikang/ai-cli/releases/download/v0.0.1/ai_cli-0.0.1-py3-none-any.whl
 ```
 
-## 使用方法
+## 使い方
 
 質問する
 
 ```bash
 ai ask "こんにちは"
-# ノーストリームモード
+# ストリームモードではありません
 ai --no-stream ask "こんにちは"
 # ヘルプ
 ai ask --help
@@ -75,20 +68,20 @@ ai chat
 
 > OPENAI_API_BASE 正向代理方式更加稳定，推荐使用。
 
-環境変数`HTTP_PROXY`および`HTTPS_PROXY`または`ALL_PROXY`をサポートしています。`--proxy`パラメータでプロキシを指定することもできます。
+`HTTP_PROXY`および`HTTPS_PROXY`環境変数または`ALL_PROXY`をサポートしています。また、`--proxy`パラメーターを使用して代理を指定することもできます。
 
 例：
 
 ```bash
 export HTTP_PROXY=http://x.x.x.x:xxxx
-# または
+# or
 export HTTPS_PROXY=https://x.x.x.x:xxxx
 ```
 
-また、socks5プロキシをサポートしています。
+また、socks5プロキシもサポートしています。
 
 ```bash
 export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
-socks5プロキシを使用する場合は、`pip install pysocks`をインストールする必要があります。
+socks5プロキシを使用するには、`pip install pysocks`を実行する必要があります。

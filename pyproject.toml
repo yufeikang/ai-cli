@@ -1,8 +1,9 @@
 [tool.pdm]
+version = { source = "file", path = "ai_cli/__init__.py" }
 
 [project]
 name = "ai_cli"
-version = "0.1.0"
+dynamic = ["version"]
 description = "This CLI tool allows you to easily chat with chatGPT in the command line. You can chat with it, ask questions, and even translate text. It also"
 authors = [
     {name = "Yufei Kang", email = "kou.uhi.x@gmail.com"},
