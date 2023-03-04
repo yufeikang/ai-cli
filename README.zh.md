@@ -64,8 +64,8 @@ pip install rich openai
 
 ```bash
 export HTTP_PROXY=http://x.x.x.x:xxxx
-export HTTPS_PROXY=http://x.x.x.x:xxxx
-export ALL_PROXY=http://x.x.x.x:xxxx
+# or
+export HTTPS_PROXY=https://x.x.x.x:xxxx
 ```
 
 也支持socks5代理，例如：
@@ -75,6 +75,10 @@ export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
 socks5代理需要安装`pip install pysocks`
+
+* OPENAI_API_BASE (可选)
+如果因为GFW的原因，你无法访问`https://api.openai.com`，你可以通过`OPENAI_API_BASE`环境变量指定其他的api地址。建议使用这种方式。它比使用代理的方式更加稳定。
+如何使用cloudflare的workers来搭建代理，可以参考这篇文章：[使用Cloudflare Workers搭建OpenAI API代理](https://github.com/noobnooc/noobnooc/discussions/9)
 
 * OPENAI_API_KEY
 可以设定环境变量`OPENAI_API_KEY`，也可以通过`--api-key`参数指定。

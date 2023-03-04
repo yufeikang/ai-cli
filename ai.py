@@ -71,12 +71,32 @@ parser.add_argument(
     help="the log level to use, defaults to INFO",
 )
 parser.add_argument(
+    "--debug",
+    "-d",
+    dest="debug",
+    action="store_true",
+    default=False,
+    help="enable debug mode, this will print the request and response to the console",
+)
+parser.add_argument(
+    "--endpoint",
+    "-e",
+    dest="endpoint",
+    type=str,
+    nargs="?",
+    help="the endpoint to use, default is https://api.openai.com/v1. You can use this to"
+    " resolve the issue of the api endpoint is blocked in your country. OPENAI_API_BASE"
+    " env var will also work.",
+)
+
+parser.add_argument(
     "--proxy",
     "-p",
     dest="proxy",
     type=str,
     nargs="?",
-    help="the proxy to use, if env var HTTP_PROXY/HTTPS+PROXY/SOCKS_PROXY/ALL_PROXY is set, this will default to that. When use socks proxy. you need install pysocks first. pip install pysocks",
+    help="the proxy to use, if env var HTTP_PROXY/HTTPS+PROXY/SOCKS_PROXY/ALL_PROXY is set,"
+    " this will default to that. When use socks proxy. you need install pysocks first. pip install pysocks",
 )
 
 command_parser = parser.add_subparsers(dest="command", help="command to run")
@@ -126,6 +146,10 @@ args = parser.parse_args()
 logging.basicConfig()
 logger = logging.getLogger("cli")
 logger.setLevel(args.log_level)
+if args.debug:
+    logging.basicConfig(level=logging.DEBUG)
+    logger.setLevel("DEBUG")
+    logger.debug("debug mode enabled")
 
 if args.api_key:
     openai.api_key = args.api_key
@@ -143,8 +167,8 @@ elif "HTTPS_PROXY" in os.environ:
     proxy = os.environ["HTTPS_PROXY"]
 elif "SOCKS_PROXY" in os.environ:
     proxy = os.environ["SOCKS_PROXY"]
-elif "ALL_PROXY2" in os.environ:
-    proxy = os.environ["ALL_PROXY2"]
+elif "ALL_PROXY" in os.environ:
+    proxy = os.environ["ALL_PROXY"]
 
 
 if proxy:
@@ -156,6 +180,13 @@ if proxy:
         except ImportError:
             print("Please install pysocks: pip install pysocks")
             exit(1)
+
+if args.endpoint:
+    logger.debug("using endpoint: %s", args.endpoint)
+    openai.api_base = args.endpoint
+elif "OPENAI_API_BASE" in os.environ:
+    logger.debug("using endpoint: %s", os.environ["OPENAI_API_BASE"])
+    openai.api_base = os.environ["OPENAI_API_BASE"]
 
 def _print(text, render):
     content = text
