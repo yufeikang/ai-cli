@@ -12,6 +12,7 @@ dependencies = [
     "rich>=13.3.1",
     "openai>=0.27.0",
     "pysocks>=1.7.1",
+    "pyperclip>=1.8.2",
 ]
 requires-python = ">=3.8"
 readme = "README.md"
@@ -61,6 +62,9 @@ workflow = [
     "parver>=0.3.1",
     "towncrier>=20",
     "pycomplete~=0.3"
+]
+dev = [
+    "black>=23.1.0",
 ]
 
 [tool.black]
