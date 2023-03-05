@@ -29,7 +29,7 @@ jobs:
       - name: Build artifacts
         run: |
           python -m build --sdist --wheel .
-          version=$(python -c "import ai_cli; print(ai_cli.__version__)")
+          version=$(cd src && python -c "import ai_cli; print(ai_cli.__version__)")
           echo "VERSION=${version}" >> $GITHUB_ENV
 
       - name: Publish distribution 📦 to PyPI
