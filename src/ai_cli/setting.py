@@ -1,5 +1,4 @@
 import json
-from dataclasses import dataclass
 from pathlib import Path
 
 from rich.console import Console
@@ -46,16 +45,21 @@ class Setting:
         return obj
 
 
-if not setting_file.exists():
-    setting_file.touch()
-    json.dump(dict(Setting()), setting_file.open("w"))
-
-
 def read_setting() -> Setting:
     if setting_file.exists():
         with setting_file.open() as f:
             return Setting.from_dict(json.load(f))
     return Setting()
+
+
+setting: Setting = Setting()
+
+
+if not setting_file.exists():
+    setting_file.touch()
+    json.dump(dict(setting), setting_file.open("w"))
+else:
+    setting = read_setting()
 
 
 def view_setting():
@@ -75,3 +79,14 @@ def view_setting():
 def save_setting(setting: Setting):
     with setting_file.open("w") as f:
         json.dump(setting.__dict__(), f)
+
+
+def set_setting(k, v):
+    global setting
+    if not hasattr(setting, k):
+        console.print(f"Setting {k} not found")
+        return
+    if isinstance(setting.__dict__()[k], bool) and isinstance(v, str):
+        v = v.lower() in ("yes", "true", "t", "1")
+    setting.set(k, v)
+    save_setting(setting)

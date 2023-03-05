@@ -3,7 +3,7 @@ import argparse
 import logging
 import os
 
-from ai_cli.setting import Setting, read_setting, save_setting, view_setting
+from ai_cli.setting import Setting, set_setting, setting, view_setting
 
 try:
     import openai
@@ -151,15 +151,13 @@ setting_parser.add_argument(
     "--edit",
     "-e",
     dest="edit",
-    action="store_true",
-    default=False,
-    help="edit the setting",
+    type=str,
+    nargs="*",
+    help="edit the setting, example: --edit api_key=xxx proxy=xxx",
 )
 
 
 args = parser.parse_args()
-
-setting: Setting = read_setting()
 
 logger = logging.getLogger("cli")
 
@@ -230,7 +228,7 @@ def _ask(question, stream=False):
     if not openai.api_key:
         openai.api_key = Prompt.ask("OpenAI API Key", password=True)
         setting.api_key = openai.api_key
-        save_setting(setting)
+        set_setting("api_key", openai.api_key)
     messages = []
     if isinstance(question, list):
         messages = question
@@ -329,24 +327,28 @@ def ask_cmd():
     ask(args.question, stream=stream)
 
 
-def setting_cmd():
-    if not args.edit:
-        view_setting()
-        return
-    setting = read_setting()
+def set_all_setting():
     for k, v in setting:
         logger.debug(f"setting: {k}={v}")
         default_value = v
-        is_bool = isinstance(v, bool)
         if k in args:
             default_value = default_value or getattr(args, k)
         value = Prompt.ask(f"Please enter a value for {k}", default=default_value)
-        if is_bool and isinstance(value, str):
-            value = value.lower() in ["true", "yes", "1"]
-        setting.set(k, value)
+        set_setting(k, value)
 
-    save_setting(setting)
-    console.print("[bold green]Setting saved!")
+
+def setting_cmd():
+    if args.edit is not None:
+        if len(args.edit) == 0:
+            set_all_setting()
+        else:
+            for s in args.edit:
+                split = s.split("=")
+                if len(split) != 2:
+                    console.print(f"[bold red]Invalid setting: {s}, please use key=value format")
+                    exit(0)
+                set_setting(split[0], split[1])
+                console.print("[bold green]Setting saved!")
     view_setting()
 
 
