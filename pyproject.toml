@@ -2,7 +2,7 @@
 version = { source = "file", path = "src/ai_cli/__init__.py" }
 
 [project]
-name = "ai_cli"
+name = "py_ai_cli"
 dynamic = ["version"]
 description = "This CLI tool allows you to easily chat with chatGPT in the command line. You can chat with it, ask questions, and even translate text. It also"
 authors = [
