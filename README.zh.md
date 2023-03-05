@@ -2,7 +2,7 @@
 
 这个cli工具可以让你方便的在命令行中使用chatGPT。你可以和他聊天，也可以让他帮你回答问题。也可以帮你翻译文本。并且支持markdown在终端中的渲染。
 
-[中文](README.zh.md) | [English](README.md) | [日本語](README.ja.md)
+ [English](README.md)| [中文](README.zh.md) | [日本語](README.ja.md)
 
 ## 依赖
 
@@ -18,7 +18,7 @@
 ## 安装
 
 ```bash
-pip install https://github.com/yufeikang/ai-cli/releases/download/v0.0.1/ai_cli-0.0.1-py3-none-any.whl
+pip install py-ai-cli
 ```
 
 或者安装最新版本
