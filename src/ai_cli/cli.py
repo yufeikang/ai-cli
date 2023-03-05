@@ -3,6 +3,8 @@ import argparse
 import logging
 import os
 
+from ai_cli.setting import Setting, read_setting, save_setting, view_setting
+
 try:
     import openai
 except ImportError:
@@ -142,10 +144,26 @@ translate_parser.add_argument(
     help="get the text to translate from a file",
 )
 
+setting_parser = command_parser.add_parser(
+    "setting", help="view/edit the setting, the setting will be saved in ~/.ai_cli.json"
+)
+setting_parser.add_argument(
+    "--edit",
+    "-e",
+    dest="edit",
+    action="store_true",
+    default=False,
+    help="edit the setting",
+)
+
+
 args = parser.parse_args()
+
+setting: Setting = read_setting()
+
 logger = logging.getLogger("cli")
 
-if args.debug:
+if args.debug or setting.debug:
     logging.basicConfig(level=logging.DEBUG)
     logger.setLevel("DEBUG")
     logger.debug("debug mode enabled")
@@ -155,6 +173,8 @@ else:
 
 if args.api_key:
     openai.api_key = args.api_key
+elif setting.api_key:
+    openai.api_key = setting.api_key
 elif "OPENAI_API_KEY" in os.environ:
     openai.api_key = os.environ["OPENAI_API_KEY"]
 else:
@@ -163,6 +183,8 @@ else:
 proxy = None
 if args.proxy:
     proxy = args.proxy
+elif setting.proxy:
+    proxy = setting.proxy
 elif "HTTP_PROXY" in os.environ:
     proxy = os.environ["HTTP_PROXY"]
 elif "HTTPS_PROXY" in os.environ:
@@ -184,16 +206,18 @@ if proxy:
             exit(1)
 
 if args.endpoint:
-    logger.debug("using endpoint: %s", args.endpoint)
     openai.api_base = args.endpoint
+elif setting.endpoint:
+    openai.api_base = setting.endpoint
 elif "OPENAI_API_BASE" in os.environ:
-    logger.debug("using endpoint: %s", os.environ["OPENAI_API_BASE"])
     openai.api_base = os.environ["OPENAI_API_BASE"]
+
+logger.debug("using endpoint: %s", openai.api_base)
 
 
 def _print(text, render):
     content = text
-    if args.raw:
+    if args.raw or setting.raw:
         render(content)
         return
     markdown = Markdown(
@@ -211,7 +235,7 @@ def _ask(question, stream=False):
     else:
         messages = [{"role": "user", "content": question}]
     return openai.ChatCompletion.create(
-        model=args.model,
+        model=setting.model or args.model,
         messages=messages,
         stream=stream,
     )
@@ -302,10 +326,32 @@ def ask_cmd():
     ask(args.question, stream=stream)
 
 
+def setting_cmd():
+    if not args.edit:
+        view_setting()
+        return
+    setting = read_setting()
+    for k, v in setting:
+        logger.debug(f"setting: {k}={v}")
+        default_value = v
+        is_bool = isinstance(v, bool)
+        if k in args:
+            default_value = default_value or getattr(args, k)
+        value = Prompt.ask(f"Please enter a value for {k}", default=default_value)
+        if is_bool and isinstance(value, str):
+            value = value.lower() in ["true", "yes", "1"]
+        setting.set(k, value)
+
+    save_setting(setting)
+    console.print("[bold green]Setting saved!")
+    view_setting()
+
+
 CMD = {
     "ask": ask_cmd,
     "chat": chat,
     "translate": translate,
+    "setting": setting_cmd,
     "help": parser.print_help,
 }
 
