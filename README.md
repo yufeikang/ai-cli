@@ -2,30 +2,31 @@
 
 # AI Tools for chatGPT
 
-This CLI tool allows you to easily use chatGPT in the command line. You can chat with it, ask it questions, and have it translate text for you. It also supports Markdown rendering in the terminal.
+This CLI tool allows you to easily use chatGPT in the command line. You can chat with it, ask it questions, and even have it translate text. It also supports markdown rendering in the terminal.
 
 [中文](README.zh.md) | [English](README.md) | [日本語](README.ja.md)
 
-## Quickstart (no installation required)
+## Quick Start (No installation required)
 
-```
-curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai_cli/cli.py -L -s | python - ask "Hello"
+```bash
+curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/src/ai_cli/cli.py -L -s | python - ask "Hello"
 ```
 
 ## Dependencies
 
 * OPENAI_API_BASE (optional)
 
-If you are unable to access `https://api.openai.com` due to GFW, you can specify another API address using the `OPENAI_API_BASE` environment variable. It is recommended to use this method, as it is more reliable than using a proxy. You
-can use Cloudflare Workers to set up a proxy. See [Using Cloudflare Workers to create an OpenAI API proxy](https://github.com/noobnooc/noobnooc/discussions/9) for more information.
+If you are unable to access `https://api.openai.com` due to the Great Firewall of China, you can specify another API address via the `OPENAI_API_BASE` environment variable. This is recommended over using a proxy for 
+stability.
+To use Cloudflare Workers to set up a proxy, you can refer to this article: [Using Cloudflare Workers as an OpenAI API proxy](https://github.com/noobnooc/noobnooc/discussions/9)
 
 * OPENAI_API_KEY
 
-You can set the `OPENAI_API_KEY` environment variable, or specify it using the `--api-key` parameter.
+You can set the `OPENAI_API_KEY` environment variable, or pass it in as a `--api-key` argument.
 
 ## Installation
 
-```
+```bash
 pip install https://github.com/yufeikang/ai-cli/releases/download/v0.0.1/ai_cli-0.0.1-py3-none-any.whl
 ```
 
@@ -41,9 +42,9 @@ ai --no-stream ask "Hello"
 ai ask --help
 ```
 
-![](./_/video/ask.gif)
+![](./asset/video/ask.gif)
 
-Translate
+Translation
 
 ```bash
 ai translate "Hello"
@@ -53,7 +54,7 @@ echo "Hello" | ai translate -t english
 cat "file.txt" | ai translate -t english
 ```
 
- ![](./_/video/translate.gif)
+ ![](./asset/video/translate.gif)
 
 Chat
 
@@ -61,13 +62,13 @@ Chat
 ai chat
 ```
 
- ![](./_/video/chat.gif)
+ ![](./asset/video/chat.gif)
 
-## Proxy support
+## Proxy Support
 
-> OPENAI_API_BASE is more reliable using a forward proxy, so it is recommended.
+> OPENAI_API_BASE is recommended over using a reverse proxy.
 
-Supports the `HTTP_PROXY` and `HTTPS_PROXY` or `ALL_PROXY` environment variables. You can also specify a proxy using the `--proxy` parameter.
+Support for `HTTP_PROXY` and `HTTPS_PROXY` or `ALL_PROXY` environment variables. You can also specify a proxy via the `--proxy` argument.
 
 For example:
 
@@ -77,10 +78,10 @@ export HTTP_PROXY=http://x.x.x.x:xxxx
 export HTTPS_PROXY=https://x.x.x.x:xxxx
 ```
 
-It also supports SOCKS5 proxies, for example:
+It also supports socks5 proxies, for example:
 
 ```bash
 export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
-SOCKS5 proxies require `pip install pysocks`.
+socks5 proxies require `pip install pysocks`

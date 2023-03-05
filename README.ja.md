@@ -1,28 +1,26 @@
-
-
 # chatGPT用のAIツール
 
-このCLIツールは、コマンドラインでchatGPTを簡単に使用できるようにします。チャットをしたり、質問に答えたり、テキストを翻訳したりすることができます。また、ターミナルでのMarkdownのレンダリングをサポートしています。
+このCLIツールを使うと、コマンドラインで簡単にchatGPTを使用できます。チャットのやり取りをしたり、質問への回答のお手伝いをしたり、テキストの翻訳をしたりすることができます。また、ターミナルでのmarkdownのレンダリングもサポー
+トしています。
 
-[中文](README.zh.md) | [English](README.md) | [日本語](README.ja.md)
+[中文版](README.zh.md) | [英文版](README.md) | [日本語版](README.ja.md)
 
-## クイック体験（インストール不要）
+## クイックスタート（インストールが必要なし）
 
 ```bash
-curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai_cli/cli.py -L -s | python - ask "こんにちは"
+curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/src/ai_cli/cli.py -L -s | python - ask "こんにちは"
 ```
 
 ## 依存関係
 
 * OPENAI_API_BASE（オプション）
 
-GFWの問題により、`https://api.openai.com`にアクセスできない場合は、`OPENAI_API_BASE`環境変数を使用して別のAPIアドレスを指定できます。この方法をお勧めします。プロキシを使用する方法よりも安定しています。 
-
-Cloudflare Workersを使用して代理を構築する方法については、次の記事を参照してください：[使用Cloudflare Workers搭建OpenAI API代理](https://github.com/noobnooc/noobnooc/discussions/9)
+GFWの制限のために`https://api.openai.com` にアクセスできない場合は、 `OPENAI_API_BASE`環境変数を使用して他のAPIアドレスを指定できます。使用をお勧めします。これは、代理を使用するよりもより安定した方法です。 
+cloudflareのworkersを使用して代理を構築する方法については、次の記事を参照してください。：[使用Cloudflare Workers搭建OpenAI API代理](https://github.com/noobnooc/noobnooc/discussions/9)
 
 * OPENAI_API_KEY
 
-`OPENAI_API_KEY`環境変数を設定するか、`--api-key`パラメーターを使用して指定できます。
+環境変数`OPENAI_API_KEY`を設定できます。または、 `--api-key` パラメータを指定できます。
 
 ## インストール
 
@@ -30,19 +28,19 @@ Cloudflare Workersを使用して代理を構築する方法については、�
 pip install https://github.com/yufeikang/ai-cli/releases/download/v0.0.1/ai_cli-0.0.1-py3-none-any.whl
 ```
 
-## 使い方
+## 使用方法
 
-質問する
+質問をする
 
 ```bash
 ai ask "こんにちは"
-# ストリームモードではありません
+# no stream mode
 ai --no-stream ask "こんにちは"
 # ヘルプ
 ai ask --help
 ```
 
-![](./_/video/ask.gif)
+![](./asset/video/ask.gif)
 
 翻訳
 
@@ -54,7 +52,7 @@ echo "こんにちは" | ai translate -t english
 cat "file.txt" | ai translate -t english
 ```
 
-![](./_/video/translate.gif)
+ ![](./asset/video/translate.gif)
 
 チャット
 
@@ -62,26 +60,28 @@ cat "file.txt" | ai translate -t english
 ai chat
 ```
 
-![](./_/video/chat.gif)
+ ![](./asset/video/chat.gif)
 
-## プロキシサポート
+## プロキシ対応
 
 > OPENAI_API_BASE 正向代理方式更加稳定，推荐使用。
 
-`HTTP_PROXY`および`HTTPS_PROXY`環境変数または`ALL_PROXY`をサポートしています。また、`--proxy`パラメーターを使用して代理を指定することもできます。
+`HTTP_PROXY`、 `HTTPS_PROXY` または `ALL_PROXY` の環境変数をサポートしています。または、 `--proxy` パラメータを使用してプロキシを指定することもできます。
 
 例：
 
 ```bash
 export HTTP_PROXY=http://x.x.x.x:xxxx
-# or
+# または
 export HTTPS_PROXY=https://x.x.x.x:xxxx
 ```
 
 また、socks5プロキシもサポートしています。
 
+例：
+
 ```bash
 export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
-socks5プロキシを使用するには、`pip install pysocks`を実行する必要があります。
+socks5プロキシを使用する場合は、 `pip install pysocks` をインストールする必要があります。

@@ -1,5 +1,5 @@
 [tool.pdm]
-version = { source = "file", path = "ai_cli/__init__.py" }
+version = { source = "file", path = "src/ai_cli/__init__.py" }
 
 [project]
 name = "ai_cli"
@@ -82,7 +82,7 @@ select = [
   "YTT",  # flake8-2020
 ]
 extend-ignore = ["B019"]
-src = ["."]
+src = ["src"]
 target-version = "py37"
 
 [tool.ruff.mccabe]

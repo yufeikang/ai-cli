@@ -7,7 +7,7 @@
 ## 快速体验(无需安装)
 
 ```bash
-curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/ai_cli/cli.py -L -s | python - ask "你好"
+curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/src/ai_cli/cli.py -L -s | python - ask "你好"
 ```
 
 ## 依赖
@@ -39,7 +39,7 @@ ai --no-stream ask "你好"
 ai ask --help
 ```
 
-![](./_/video/ask.gif)
+![](./asset/video/ask.gif)
 
 翻译
 
@@ -51,7 +51,7 @@ echo "你好" | ai translate -t english
 cat "file.txt" | ai translate -t english
 ```
 
- ![](./_/video/translate.gif)
+ ![](./asset/video/translate.gif)
 
 聊天
 
@@ -59,7 +59,7 @@ cat "file.txt" | ai translate -t english
 ai chat
 ```
 
- ![](./_/video/chat.gif)
+ ![](./asset/video/chat.gif)
 
 ## 代理支持
 
