@@ -32,11 +32,15 @@ jobs:
           version=$(python -c "import ai_cli; print(ai_cli.__version__)")
           echo "VERSION=${version}" >> $GITHUB_ENV
 
-      # - name: Publish distribution 📦 to PyPI
-      #   if: startsWith(github.ref, 'refs/tags')
-      #   uses: pypa/gh-action-pypi-publish@release/v1
-      #   with:
-      #     password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish distribution 📦 to PyPI
+        if: startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Get Changelog
+        id: get-changelog
+        run: |
+          awk '/-{3,}/{flag=1;next}/Release/{if (flag==1)exit}flag' CHANGELOG.md > .changelog.md
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -46,6 +50,7 @@ jobs:
           tag_name: v${{ env.VERSION }}
           release_name: Release ${{ env.VERSION }}
           draft: false
+          body_path: .changelog.md
           prerelease: false
       - name: Upload Release Asset
         id: upload-release-asset

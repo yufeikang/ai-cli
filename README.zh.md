@@ -21,6 +21,12 @@
 pip install https://github.com/yufeikang/ai-cli/releases/download/v0.0.1/ai_cli-0.0.1-py3-none-any.whl
 ```
 
+或者安装最新版本
+
+```bash
+ pip install git+https://github.com/yufeikang/ai-cli.git    
+```
+
 ## 设定
 
 现在你可以通过`ai setting`命令来设置api key和api base了。同时环境变量和cli参数依然有效。
@@ -34,7 +40,7 @@ ai setting -e
 
 ## 使用
 
-问问题
+问一个问题
 
 ```bash
 ai ask "你好"
