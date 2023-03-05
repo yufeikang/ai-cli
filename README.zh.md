@@ -4,12 +4,6 @@
 
 [中文](README.zh.md) | [English](README.md) | [日本語](README.ja.md)
 
-## 快速体验(无需安装)
-
-```bash
-curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/src/ai_cli/cli.py -L -s | python - ask "你好"
-```
-
 ## 依赖
 
 * OPENAI_API_BASE (可选)
@@ -19,12 +13,23 @@ curl https://raw.githubusercontent.com/yufeikang/ai-cli/main/src/ai_cli/cli.py -
 
 * OPENAI_API_KEY
 
-可以设定环境变量`OPENAI_API_KEY`，也可以通过`--api-key`参数指定。
+可以设定环境变量`OPENAI_API_KEY`，也可以通过`--api-key`参数指定。也可通过`ai setting`命令来设置。
 
 ## 安装
 
 ```bash
 pip install https://github.com/yufeikang/ai-cli/releases/download/v0.0.1/ai_cli-0.0.1-py3-none-any.whl
+```
+
+## 设定
+
+现在你可以通过`ai setting`命令来设置api key和api base了。同时环境变量和cli参数依然有效。
+
+```bash
+# 查看setting
+ai setting
+# 设置
+ai setting -e
 ```
 
 ## 使用
@@ -83,3 +88,6 @@ export ALL_PROXY=socks5://x.x.x.x:xxxx
 
 socks5代理需要安装`pip install pysocks`
 
+## 补充
+
+请用`ai --help`来查看更多命令。
