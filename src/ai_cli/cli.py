@@ -177,8 +177,6 @@ elif setting.api_key:
     openai.api_key = setting.api_key
 elif "OPENAI_API_KEY" in os.environ:
     openai.api_key = os.environ["OPENAI_API_KEY"]
-else:
-    openai.api_key = Prompt.ask("OpenAI API Key", password=True)
 
 proxy = None
 if args.proxy:
@@ -229,6 +227,10 @@ def _print(text, render):
 
 
 def _ask(question, stream=False):
+    if not openai.api_key:
+        openai.api_key = Prompt.ask("OpenAI API Key", password=True)
+        setting.api_key = openai.api_key
+        save_setting(setting)
     messages = []
     if isinstance(question, list):
         messages = question
@@ -310,6 +312,7 @@ def translate():
         text = Prompt.ask("Please enter a text to translate")
     if isinstance(text, list):
         text = " ".join(text)
+    logger.debug("translating text: %s", text)
     if args.source:
         question = f"{text} \n\n Please translate the above content from {args.source} to {args.target}"
     else:
