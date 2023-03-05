@@ -12,7 +12,7 @@ setting_file = Path.home() / ".ai_cli.json"
 class Setting:
     api_key = None
     endpoint = "https://api.openai.com/v1"
-    model = "gpt3.5-turbo"
+    model = "gpt-3.5-turbo"
     no_stream = False
     raw = False
     log_level = "INFO"
