@@ -14,7 +14,7 @@ dependencies = [
     "pysocks>=1.7.1",
 ]
 requires-python = ">=3.8"
-readme = "README.zh.md"
+readme = "README.md"
 license = {text = "MIT"}
 
 [project.urls]
@@ -27,9 +27,9 @@ build-backend = "pdm.pep517.api"
 
 [tool.pdm.build]
 excludes = [".git"]
-package-dir = "."
-includes = ["ai_cli"]
-source-includes = ["tests", "CHANGELOG.md", "LICENSE", "README.md"]
+package-dir = "src"
+includes = ["src/ai_cli"]
+source-includes = ["tests", "CHANGELOG.md", "LICENSE", "README.md", "README_*.md"]
 # editables backend doesn't work well with namespace packages
 editable-backend = "path"
 
