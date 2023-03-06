@@ -1,27 +1,28 @@
 
 
-# AIツール for chatGPT
+# AI Tools for chatGPT
 
-このCLIツールを使用すると、コマンドラインでchatGPTを簡単に使用できます。チャットをしたり、質問に答えたり、テキストを翻訳したりでき
-ます。また、ターミナルでのMarkdownのレンダリングをサポートしています。
+このCLIツールは、chatGPTを簡単にコマンドラインで使用できるようにします。チャットしたり、質問に答えたり、テキストを翻訳したりすることが
+できます。また、ターミナルでのMarkdownのレンダリングをサポートしています。
 
 [![PyPI](https://img.shields.io/pypi/v/py-ai-cli?logo=python&logoColor=%23cccccc)](https://pypi.org/project/py-ai-cli)
 
-[English](README.md)| [中文](README_zh.md) | [日本語](README_ja.md)
+ [English](README.md)| [中文](README_zh.md) | [日本語](README_ja.md)
 
-## 依存関係
+## 必要なもの
 
 * OPENAI_API_BASE (オプション)
 
-GFWの制限のために`https://api.openai.com`にアクセスできない場合は、`OPENAI_API_BASE`環境変数を使
-用して別のAPIアドレスを指定できます。これは推奨されます。これにより、プロキシを使用する場合よりも安定性が向上します。
-Cloudflareのワーカーを使用してプロキシを構築する方法については、[Cloudflare WorkersでOpenAI 
-APIプロキシを構築する方法](https://github.com/noobnooc/noobnooc/discussions/9)を参照してください。
+GFWの影響で `https://api.openai.com` 
+にアクセスすることができない場合は、`OPENAI_API_BASE`環境変数を使用して他のAPIアドレスを指定できます。高度なプロキシの使用よりも安定した
+方法です。
+Cloudflare 
+Workersを使用してプロキシを構成する方法については、[こちらの記事](https://github.com/noobnooc/noobnooc/discussions/9)を参照してください。
 
 * OPENAI_API_KEY
 
-環境変数`OPENAI_API_KEY`を設定するか、`--api-key`パラメーターを使用して指定することができます。この他、`ai 
-setting`コマンドを使用して設定することもできます。
+`OPENAI_API_KEY` 環境変数を設定するか、 `--api-key` パラメーターを使用してAPIキーを指定できます。 `ai 
+setting`コマンドを使用しても指定できます。
 
 ## インストール
 
@@ -29,7 +30,7 @@ setting`コマンドを使用して設定することもできます。
 pip install py-ai-cli
 ```
 
-または最新バージョンをインストールするには
+または最新バージョンをインストールすることもできます
 
 ```bash
  pip install git+https://github.com/yufeikang/ai-cli.git    
@@ -37,22 +38,22 @@ pip install py-ai-cli
 
 ## 設定
 
-`ai setting`コマンドを使用して、APIキーとAPIベースを設定できます。環境変数とCLIパラメーターも引き続き使用できます。
+現在、`ai setting`コマンドを使用して、APIキーとAPIベースを設定できます。環境変数やCLIパラメータも引き続き有効です。
 
 ```bash
-# 設定の確認
+# 設定を確認する
 ai setting
-# 設定
+# 設定変更
 ai setting -e
 ```
 
-## 使用法
+## 使い方
 
 質問する
 
 ```bash
 ai ask "こんにちは"
-# ストリームモードを無効にする
+# ストリームモードを無効化する場合
 ai --no-stream ask "こんにちは"
 # ヘルプ
 ai ask --help
@@ -80,29 +81,29 @@ ai chat
 
  ![](./asset/video/chat.gif)
 
-## プロキシサポート
+## プロキシーサポート
 
 > OPENAI_API_BASE 正向代理方式更加稳定，推荐使用。
 
-環境変数`HTTP_PROXY`と`HTTPS_PROXY`または`ALL_PROXY`をサポートしています。また、`--proxy`パラメーターを使用してプロキシを指定する
-こともできます。
+環境変数 `HTTP_PROXY`および`HTTPS_PROXY`または`ALL_PROXY` 
+をサポートしています。また、「--proxy」パラメーターを使用してプロキシを指定することもできます。
 
 例：
 
 ```bash
 export HTTP_PROXY=http://x.x.x.x:xxxx
-# または
+# or
 export HTTPS_PROXY=https://x.x.x.x:xxxx
 ```
 
-また、socks5プロキシもサポートしています。
+socks5プロキシもサポートされています。例：
 
 ```bash
 export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
-socks5プロキシを使用するには、`pip install pysocks`をインストールする必要があります。
+socks5プロキシには、 `pip install pysocks` をインストールする必要があります。
 
-## 追加情報
+## 補足
 
-詳細なコマンドは、`ai --help`を使用してください。
+`ai --help`を使用して、より多くのコマンドを表示します。
