@@ -274,10 +274,7 @@ def chat():
     stream = not args.no_stream
     messages = []
     while True:
-        question = get_user_input(
-            "[bold blue]You[/bold blue]",
-            console=console,
-        )
+        question = get_user_input("You")
         if not question:
             break
         messages.append({"role": "user", "content": question})
@@ -309,14 +306,14 @@ def _get_text_from_file():
         return None
 
 
-def get_user_input(prompt="Please enter a question", console=console):
+def get_user_input(prompt="Please enter a question"):
     logger.debug("reading question from stdin")
     multi_line_input = setting.multi_line_input or args.multi_line_input
     if sys.stdin.isatty():
         if multi_line_input:
-            console.print(f"[bold blue]{prompt}, Ctrl+D end input[/bold blue]", console=console)
+            console.print(f"[bold blue]{prompt}:, Ctrl+D end input[/bold blue]")
         else:
-            console.print(f"[bold blue]{prompt}[/bold blue]", console=console)
+            console.print(f"[bold blue]{prompt}:[/bold blue]")
     return sys.stdin.readlines() if multi_line_input else sys.stdin.readline()
 
 
