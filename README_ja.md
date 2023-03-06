@@ -1,23 +1,27 @@
 
 
-# AIツール chatGPT
+# AIツール for chatGPT
 
-このCLIツールは、コマンドラインでchatGPTを簡単に使用できます。 彼とチャットすることも、質問に答えてもらうこともできます。 
-また、テキストの翻訳を行うこともできます。そして、ターミナルでマークダウンをレンダリングすることもできます。
+このCLIツールを使用すると、コマンドラインでchatGPTを簡単に使用できます。チャットをしたり、質問に答えたり、テキストを翻訳したりでき
+ます。また、ターミナルでのMarkdownのレンダリングをサポートしています。
 
-[English](README.md) | [中文](README_zh.md) | [日本語](README_ja.md)
+[![PyPI](https://img.shields.io/pypi/v/py-ai-cli?logo=python&logoColor=%23cccccc)](https://pypi.org/project/py-ai-cli)
+
+[English](README.md)| [中文](README_zh.md) | [日本語](README_ja.md)
 
 ## 依存関係
 
 * OPENAI_API_BASE (オプション)
 
-GFWのために `https://api.openai.com`にアクセスできない場合は、 
-`OPENAI_API_BASE`環境変数を使用して別のapiアドレスを指定できます。この方法を使用することをお勧めします。これは、プロキシを使用する方法よりも安定しています。
-Cloudflare Workersを使用してプロキシを設定する方法については、[Using Cloudflare Workers to Set Up OpenAI API Proxy](https://github.com/noobnooc/noobnooc/discussions/9)を参照してください。
+GFWの制限のために`https://api.openai.com`にアクセスできない場合は、`OPENAI_API_BASE`環境変数を使
+用して別のAPIアドレスを指定できます。これは推奨されます。これにより、プロキシを使用する場合よりも安定性が向上します。
+Cloudflareのワーカーを使用してプロキシを構築する方法については、[Cloudflare WorkersでOpenAI 
+APIプロキシを構築する方法](https://github.com/noobnooc/noobnooc/discussions/9)を参照してください。
 
 * OPENAI_API_KEY
 
-`OPENAI_API_KEY`環境変数を設定し、 `--api-key`でパラメータを指定するか、 `ai setting`コマンドを使用して設定できます。
+環境変数`OPENAI_API_KEY`を設定するか、`--api-key`パラメーターを使用して指定することができます。この他、`ai 
+setting`コマンドを使用して設定することもできます。
 
 ## インストール
 
@@ -25,7 +29,7 @@ Cloudflare Workersを使用してプロキシを設定する方法について�
 pip install py-ai-cli
 ```
 
-または最新バージョンをインストールする
+または最新バージョンをインストールするには
 
 ```bash
  pip install git+https://github.com/yufeikang/ai-cli.git    
@@ -33,22 +37,22 @@ pip install py-ai-cli
 
 ## 設定
 
-今、 `ai setting`コマンドを使用して API キーと API ベースを設定できます。環境変数とCLIパラメータも引き続き有効です。
+`ai setting`コマンドを使用して、APIキーとAPIベースを設定できます。環境変数とCLIパラメーターも引き続き使用できます。
 
 ```bash
 # 設定の確認
 ai setting
-# 設定する
+# 設定
 ai setting -e
 ```
 
-## 使用方法
+## 使用法
 
-質問をする：
+質問する
 
 ```bash
 ai ask "こんにちは"
-# ノーストリームモード
+# ストリームモードを無効にする
 ai --no-stream ask "こんにちは"
 # ヘルプ
 ai ask --help
@@ -56,7 +60,7 @@ ai ask --help
 
 ![](./asset/video/ask.gif)
 
-翻訳する：
+翻訳
 
 ```bash
 ai translate "こんにちは"
@@ -66,21 +70,22 @@ echo "こんにちは" | ai translate -t english
 cat "file.txt" | ai translate -t english
 ```
 
-![](./asset/video/translate.gif)
+ ![](./asset/video/translate.gif)
 
-おしゃべり
+チャット
 
 ```bash
 ai chat
 ```
 
-![](./asset/video/chat.gif)
+ ![](./asset/video/chat.gif)
 
-## 代理サポート
+## プロキシサポート
 
-> OPENAI_API_BASE 正しいプロキシ方法はより安定しているため、お勧めします。
+> OPENAI_API_BASE 正向代理方式更加稳定，推荐使用。
 
-環境変数 `HTTP_PROXY` と `HTTPS_PROXY`または `ALL_PROXY`がサポートされています。 `--proxy`パラメータを使用してプロキシを指定することもできます。
+環境変数`HTTP_PROXY`と`HTTPS_PROXY`または`ALL_PROXY`をサポートしています。また、`--proxy`パラメーターを使用してプロキシを指定する
+こともできます。
 
 例：
 
@@ -90,14 +95,14 @@ export HTTP_PROXY=http://x.x.x.x:xxxx
 export HTTPS_PROXY=https://x.x.x.x:xxxx
 ```
 
-また、socks5プロキシもサポートされています。
+また、socks5プロキシもサポートしています。
 
 ```bash
 export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
-socks5プロキシには、 `pip install pysocks`をインストールする必要があります。
+socks5プロキシを使用するには、`pip install pysocks`をインストールする必要があります。
 
 ## 追加情報
 
-より多くのコマンドを表示するには、 `ai --help`を使用してください。
+詳細なコマンドは、`ai --help`を使用してください。

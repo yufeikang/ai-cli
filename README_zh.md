@@ -2,6 +2,8 @@
 
 这个cli工具可以让你方便的在命令行中使用chatGPT。你可以和他聊天，也可以让他帮你回答问题。也可以帮你翻译文本。并且支持markdown在终端中的渲染。
 
+[![PyPI](https://img.shields.io/pypi/v/py-ai-cli?logo=python&logoColor=%23cccccc)](https://pypi.org/project/py-ai-ali)
+
  [English](README.md)| [中文](README_zh.md) | [日本語](README_ja.md)
 
 ## 依赖
