@@ -2,8 +2,9 @@
 import argparse
 import logging
 import os
+import sys
 
-from ai_cli.setting import Setting, set_setting, setting, view_setting
+from ai_cli.setting import set_setting, setting, view_setting
 
 try:
     import openai
@@ -80,6 +81,15 @@ parser.add_argument(
     default=False,
     help="enable debug mode, this will print the request and response to the console",
 )
+parser.add_argument(
+    "--multi-line",
+    "-ml",
+    dest="multi_line_input",
+    action="store_true",
+    default=False,
+    help="enable multi line mode, this will enable multi line input, when enabled, you can end the input with Ctrl+D",
+)
+
 parser.add_argument(
     "--endpoint",
     "-e",
@@ -264,7 +274,7 @@ def chat():
     stream = not args.no_stream
     messages = []
     while True:
-        question = Prompt.ask(
+        question = get_user_input(
             "[bold blue]You[/bold blue]",
             console=console,
         )
@@ -299,6 +309,17 @@ def _get_text_from_file():
         return None
 
 
+def get_user_input(prompt="Please enter a question", console=console):
+    logger.debug("reading question from stdin")
+    multi_line_input = setting.multi_line_input or args.multi_line_input
+    if sys.stdin.isatty():
+        if multi_line_input:
+            console.print(f"[bold blue]{prompt}, Ctrl+D end input[/bold blue]", console=console)
+        else:
+            console.print(f"[bold blue]{prompt}[/bold blue]", console=console)
+    return sys.stdin.readlines() if multi_line_input else sys.stdin.readline()
+
+
 def translate():
     stream = not args.no_stream
     text = args.text
@@ -307,7 +328,7 @@ def translate():
     elif args.clipboard:
         text = _get_text_from_clipboard()
     if not text:
-        text = Prompt.ask("Please enter a text to translate")
+        text = get_user_input("Please enter a text to translate")
     if isinstance(text, list):
         text = " ".join(text)
     logger.debug("translating text: %s", text)
@@ -321,7 +342,9 @@ def translate():
 
 def ask_cmd():
     stream = not args.no_stream
-    args.question = args.question or Prompt.ask("Please enter a question")
+    if not args.question:
+        args.question = get_user_input()
+
     if isinstance(args.question, list):
         args.question = " ".join(args.question)
     ask(args.question, stream=stream)

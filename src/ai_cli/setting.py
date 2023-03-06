@@ -17,6 +17,7 @@ class Setting:
     log_level = "INFO"
     debug = False
     proxy = None
+    multi_line_input = False
 
     def __iter__(self):
         for k in self.__dir__():
