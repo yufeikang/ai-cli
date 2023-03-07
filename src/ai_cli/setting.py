@@ -18,6 +18,7 @@ class Setting:
     debug = False
     proxy = None
     multi_line_input = False
+    review_prompt = "Please review the above code diff, looking for bugs and potential improvements."
 
     def __iter__(self):
         for k in self.__dir__():
@@ -33,6 +34,8 @@ class Setting:
 
     def set(self, k, v):
         if not hasattr(self, k):
+            return
+        if v is None:
             return
         setattr(self, k, v)
 

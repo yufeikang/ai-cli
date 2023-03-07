@@ -5,6 +5,7 @@ import os
 import sys
 import time
 
+from ai_cli import git
 from ai_cli.setting import set_setting, setting, view_setting
 
 try:
@@ -165,6 +166,16 @@ setting_parser.add_argument(
     type=str,
     nargs="*",
     help="edit the setting, example: --edit api_key=xxx proxy=xxx",
+)
+review_parser = command_parser.add_parser("review", help="let the assistant review your code")
+review_parser.add_argument(
+    "--target",
+    "-t",
+    dest="target",
+    type=str,
+    nargs="?",
+    default="HEAD",
+    help="the target branch/version to compare with, example: master, develop, v1.0.0, a2c3d4e, HEAD",
 )
 
 
@@ -347,10 +358,31 @@ def ask_cmd():
     stream = not args.no_stream
     if not args.question:
         args.question = get_user_input()
-
+    logger.debug("asking question: %s", args.question)
     if isinstance(args.question, list):
         args.question = " ".join(args.question)
     ask(args.question, stream=stream)
+
+
+def review_cmd():
+    stream = not args.no_stream
+    if not git.is_exist_git_repo(os.getcwd()):
+        console.print("[bold red]Not a git repository, please run this command in a git repository")
+        exit(0)
+    diff_files = git.get_change_files(args.target)
+    if not diff_files or len(diff_files) == 0:
+        console.print("[bold red]No diff files found")
+        exit(0)
+    for f in diff_files:
+        console.print(f"[bold blue]Reviewing file: {f}[/bold blue]")
+        diff_context = git.get_file_diff(f, args.target)
+        if not diff_context:
+            console.print(f"[bold red]No diff found for file: {f}")
+            continue
+        text = f"{diff_context} \n\n {setting.review_prompt}"
+        ask(text, stream=stream)
+        Prompt.ask("[bold blue]Press enter to continue[/bold blue]")
+    console.print("[bold green]Done![/bold green]")
 
 
 def set_all_setting():
@@ -382,6 +414,7 @@ CMD = {
     "ask": ask_cmd,
     "chat": chat,
     "translate": translate,
+    "review": review_cmd,
     "setting": setting_cmd,
     "help": parser.print_help,
 }
