@@ -2,26 +2,24 @@
 
 # AI Tools for chatGPT
 
-This CLI tool allows you to easily use chatGPT in the command line. You can chat with it, ask it questions, and even translate text. It 
-also supports rendering Markdown in the terminal.
+This CLI tool allows you to easily use chatGPT in the command line. You can chat with the AI or ask it questions. It can also translate texts for you, and supports rendering Markdown in the terminal.
 
 [![PyPI](https://img.shields.io/pypi/v/py-ai-cli?logo=python&logoColor=%23cccccc)](https://pypi.org/project/py-ai-cli)
 
-[English](README.md)| [中文](README_zh.md) | [日本語](README_ja.md)
+ [English](README.md)| [中文](README_zh.md) | [日本語](README_ja.md)
 
 ## Dependencies
 
 * OPENAI_API_BASE (optional)
 
-If you cannot access `https://api.openai.com` due to GFW, you can specify an alternative API endpoint through the `OPENAI_API_BASE` 
-environment variable. We recommend this approach since it is more stable than using proxies. You can follow this article to learn how to 
-use Cloudflare Workers to set up a proxy: [Using Cloudflare Workers to proxy OpenAI 
-API](https://github.com/noobnooc/noobnooc/discussions/9).
+If you are unable to access `https://api.openai.com` due to the GFW, you can specify a different API address with the `OPENAI_API_BASE` environment variable. We recommend using this method as it is more 
+stable than using a proxy.
+You can refer to this article for instructions on how to use Cloudflare workers to build an OpenAI API proxy: [Build an OpenAI API Proxy with Cloudflare 
+Workers](https://github.com/noobnooc/noobnooc/discussions/9).
 
 * OPENAI_API_KEY
 
-You can set the `OPENAI_API_KEY` environment variable, or use the `--api-key` parameter. You can also use the `ai setting` command to set
-it.
+You can set the environment variable `OPENAI_API_KEY`, or specify it through the `--api-key` parameter. You can also set it through the `ai setting` command.
 
 ## Installation
 
@@ -37,19 +35,18 @@ Or install the latest version
 
 ## Configuration
 
-You can use the `ai setting` command to set your API key and API endpoint. The environment variables and command-line arguments still 
-work.
+Now you can set the API key and API base with the `ai setting` command. Environment variables and CLI arguments are still valid.
 
 ```bash
-# Check settings
+# View settings
 ai setting
-# Set settings
+# Set
 ai setting -e
 ```
 
 ## Usage
 
-Ask a question:
+Ask a question
 
 ```bash
 ai ask "Hello"
@@ -61,7 +58,7 @@ ai ask --help
 
 ![](./asset/video/ask.gif)
 
-Translation:
+Translation
 
 ```bash
 ai translate "Hello"
@@ -73,7 +70,7 @@ cat "file.txt" | ai translate -t english
 
  ![](./asset/video/translate.gif)
 
-Chat:
+Chat
 
 ```bash
 ai chat
@@ -81,12 +78,20 @@ ai chat
 
  ![](./asset/video/chat.gif)
 
+Code Review
+
+```bash
+ai review
+ai review -t develop
+ai review -t HEAD~1
+
+```
+
 ## Proxy Support
 
-> OPENAI_API_BASE Using a forward proxy is more stable, and we recommend it.
+> OPENAI_API_BASE Forward proxy is more stable and recommended.
 
-Supports the `HTTP_PROXY` and `HTTPS_PROXY` environment variables or `ALL_PROXY`. You can also use the `--proxy` parameter to specify a 
-proxy.
+Support the `HTTP_PROXY` and `HTTPS_PROXY` or `ALL_PROXY` environment variables. You can also specify a proxy with the `--proxy` parameter.
 
 For example:
 
@@ -96,14 +101,14 @@ export HTTP_PROXY=http://x.x.x.x:xxxx
 export HTTPS_PROXY=https://x.x.x.x:xxxx
 ```
 
-It also supports SOCKS5 proxies, for example:
+SOCKS5 proxies are also supported, for example:
 
 ```bash
 export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
-You need to install `pip install pysocks` for SOCKS5 proxies.
+SOCKS5 proxies require `pip install pysocks`.
 
 ## Additional Information
 
-Use `ai --help` to view more commands.
+Please use `ai --help` to view more commands.

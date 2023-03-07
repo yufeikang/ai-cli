@@ -74,6 +74,15 @@ ai chat
 
  ![](./asset/video/chat.gif)
 
+Code Review
+
+```bash
+ai review
+ai review -t develop
+ai review -t HEAD~1
+
+```
+
 ## 代理支持
 
 > OPENAI_API_BASE 正向代理方式更加稳定，推荐使用。
