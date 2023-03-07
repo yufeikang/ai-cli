@@ -3,6 +3,7 @@ import argparse
 import logging
 import os
 import sys
+import time
 
 from ai_cli.setting import set_setting, setting, view_setting
 
@@ -244,11 +245,16 @@ def _ask(question, stream=False):
         messages = question
     else:
         messages = [{"role": "user", "content": question}]
-    return openai.ChatCompletion.create(
-        model=setting.model or args.model,
-        messages=messages,
-        stream=stream,
-    )
+    try:
+        return openai.ChatCompletion.create(
+            model=setting.model or args.model,
+            messages=messages,
+            stream=stream,
+        )
+    except openai.error.RateLimitError:
+        logger.warn("rate limit exceeded, sleep for 10 seconds, then retry")
+        time.sleep(10)
+        return _ask(question, stream=stream)
 
 
 def ask(question, stream=False):
