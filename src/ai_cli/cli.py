@@ -331,7 +331,7 @@ def get_user_input(prompt="Please enter a question"):
             console.print(f"[bold blue]{prompt}:, Ctrl+D end input[/bold blue]")
         else:
             console.print(f"[bold blue]{prompt}:[/bold blue]")
-    return sys.stdin.readlines() if multi_line_input else sys.stdin.readline()
+    return "\n".join(sys.stdin.readlines()) if multi_line_input else sys.stdin.readline()
 
 
 def translate():
