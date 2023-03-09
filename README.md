@@ -87,6 +87,44 @@ ai review -t HEAD~1
 
 ```
 
+## Chat Presets
+
+You can add custom chat or ask presets that will be included along with your messages. This can be useful to set a different context for different chats or commands.
+
+e.g. you can have a 'unix' preset 
+```python
+ChatPreset(
+            name="unix",
+            role="system",
+            stream=False,
+            no_markdown=True,
+            temperature=0.15,
+            instruction=f"""
+            I want you to act as an experienced devops engineer, software engineer, and unix expert. You are an expert in devops, systems design, unix, linux, vim, shell scripts, python, and more.
+            I will ask you to write unix commands and code snippets for me.
+            I want you to only reply with the terminal command or code, and nothing else. Do not use markdown. Do not write explanations. Your response should be executable verbatim.
+            """,
+        ),
+```
+
+```
+$ ai ask --preset unix "write a bash script that contains an if block, where the true condition is only if an environmental variable is set"
+
+#!/bin/bash
+
+if [ -z "$ENV_VAR" ]; then
+  echo "ENV_VAR is not set"
+else
+  echo "ENV_VAR is set to $ENV_VAR"
+fi
+
+
+Note: Replace ENV_VAR with the name of the environmental variable you want to check.
+```
+
+To add your own presets, add a new prompt and model to `models` inside the `Presets` class in `chat_presets.py`
+
+
 ## Proxy Support
 
 > OPENAI_API_BASE Forward proxy is more stable and recommended.
