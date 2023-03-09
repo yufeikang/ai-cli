@@ -21,17 +21,17 @@ Workers](https://github.com/noobnooc/noobnooc/discussions/9).
 
 You can set the environment variable `OPENAI_API_KEY`, or specify it through the `--api-key` parameter. You can also set it through the `ai setting` command.
 
+To build a new executable, you need [pdm](https://pdm.fming.dev/latest/) installed.
+
 ## Installation
 
+`py_ai_cli` is a standalone executable file. Add it to your path to access `ai` from anywhere.
 ```bash
-pip install py-ai-cli
+ln -s $(pwd)/py_ai_cli /usr/local/bin/ai
 ```
 
-Or install the latest version
 
-```bash
- pip install git+https://github.com/yufeikang/ai-cli.git    
-```
+To apply updates and build a new executable, run `run_build.sh`
 
 ## Configuration
 
