@@ -1,54 +1,59 @@
-# AI Tools for chatGPT
+# chatGPT 的 AI 工具
 
-这个cli工具可以让你方便的在命令行中使用chatGPT。你可以和他聊天，也可以让他帮你回答问题。也可以帮你翻译文本。并且支持markdown在终端中的渲染。
+这个 CLI 工具让你可以轻松地在命令行中使用 chatGPT。你可以和 AI 
+聊天或者问它问题。它还可以为你翻译文本，并且支持在终端中渲染 Markdown。
 
-[![PyPI](https://img.shields.io/pypi/v/py-ai-cli?logo=python&logoColor=%23cccccc)](https://pypi.org/project/py-ai-cli)
+[![PyPI](https://img.shields.io/pypi/v/py-ai-cli?logo=python&logoColor=%23cccccc)](https://pypi.org/proj
+ect/py-ai-cli)
 
- [English](README.md)| [中文](README_zh.md) | [日本語](README_ja.md)
+[English](README.md) | [中文](README_zh.md) | [日本語](README_ja.md)
 
 ## 依赖
 
-* OPENAI_API_BASE (可选)
+* OPENAI_API_BASE（可选）
 
-如果因为GFW的原因，你无法访问`https://api.openai.com`，你可以通过`OPENAI_API_BASE`环境变量指定其他的api地址。建议使用这种方式。它比使用代理的方式更加稳定。
-如何使用cloudflare的workers来搭建代理，可以参考这篇文章：[使用Cloudflare Workers搭建OpenAI API代理](https://github.com/noobnooc/noobnooc/discussions/9)
+如果你由于 GFW 的原因无法访问 `https://api.openai.com`，你可以使用 `OPENAI_API_BASE` 环境变量指定不同的 
+API 地址。我们建议使用这种方法，因为它比使用代理更加稳定。你可以参考这篇文章了解如何使用 Cloudflare 的 
+Workers 来构建一个 OpenAI API 代理：[使用 Cloudflare Workers 构建 OpenAI API 
+代理](https://github.com/noobnooc/noobnooc/discussions/9)。
 
 * OPENAI_API_KEY
 
-可以设定环境变量`OPENAI_API_KEY`，也可以通过`--api-key`参数指定。也可通过`ai setting`命令来设置。
+你可以设置环境变量 `OPENAI_API_KEY` 或者使用 `--api-key` 参数指定它。你还可以使用 `ai setting` 
+命令来设置它。
+
+为了构建一个新的可执行文件，你需要安装 (https://pdm.fming.dev/latest/)。
 
 ## 安装
 
+`py_ai_cli` 是一个独立的可执行文件。将它添加到你的路径中，就可以从任何地方访问 `ai`。
 ```bash
-pip install py-ai-cli
+ln -s $(pwd)/py_ai_cli /usr/local/bin/ai
 ```
 
-或者安装最新版本
+
+要应用更新并构建一个新的可执行文件，请运行 `run_build.sh`。
+
+## 配置
+
+现在，你可以使用 `ai setting` 命令设置 API 键和 API base。环境变量和命令行参数仍然有效。 
 
 ```bash
- pip install git+https://github.com/yufeikang/ai-cli.git    
-```
-
-## 设定
-
-现在你可以通过`ai setting`命令来设置api key和api base了。同时环境变量和cli参数依然有效。
-
-```bash
-# 查看setting
+# 查看设置
 ai setting
 # 设置
 ai setting -e
 ```
 
-## 使用
+## 用法
 
-问一个问题
+问问题
 
 ```bash
 ai ask "你好"
-# no stream mode
+# 无流模式
 ai --no-stream ask "你好"
-# help
+# 帮助
 ai ask --help
 ```
 
@@ -58,13 +63,13 @@ ai ask --help
 
 ```bash
 ai translate "你好"
-ai translate "你好" -t japanese
-ai translate -t english -f "file.txt"
+ai translate "你好" -t english
+ai translate -t japanese -f "file.txt"
 echo "你好" | ai translate -t english
 cat "file.txt" | ai translate -t english
 ```
 
- ![](./asset/video/translate.gif)
+![](./asset/video/translate.gif)
 
 聊天
 
@@ -72,9 +77,9 @@ cat "file.txt" | ai translate -t english
 ai chat
 ```
 
- ![](./asset/video/chat.gif)
+![](./asset/video/chat.gif)
 
-Code Review
+代码审查
 
 ```bash
 ai review
@@ -85,26 +90,26 @@ ai review -t HEAD~1
 
 ## 代理支持
 
-> OPENAI_API_BASE 正向代理方式更加稳定，推荐使用。
+> OPENAI_API_BASE 的前向代理更加稳定，推荐使用。
 
-支持环境变量`HTTP_PROXY`和`HTTPS_PROXY` 或者 `ALL_PROXY`。也可以通过`--proxy`参数指定代理。
+支持 `HTTP_PROXY` 和 `HTTPS_PROXY` 或者 `ALL_PROXY` 环境变量。你还可以使用 `--proxy` 参数指定一个代理。
 
 例如：
 
 ```bash
 export HTTP_PROXY=http://x.x.x.x:xxxx
-# or
+# 或者
 export HTTPS_PROXY=https://x.x.x.x:xxxx
 ```
 
-也支持socks5代理，例如：
+SOCKS5 代理也被支持，例如：
 
 ```bash
 export ALL_PROXY=socks5://x.x.x.x:xxxx
 ```
 
-socks5代理需要安装`pip install pysocks`
+SOCKS5 代理需要 `pip install pysocks`。
 
-## 补充
+## 其他信息
 
-请用`ai --help`来查看更多命令。
+请使用 `ai --help` 查看更多命令。
