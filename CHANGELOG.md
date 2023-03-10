@@ -1,3 +1,9 @@
+Release v0.0.9
+---------------------------
+
+- feat: Added `--prefix` to chat and ask commands, and a base model to add custom prompts for different use cases.
+
+
 Release v0.0.8
 ---------------------------
 

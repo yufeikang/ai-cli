@@ -4,9 +4,11 @@ import logging
 import os
 import sys
 import time
+from typing import Optional
 
 from ai_cli import git
 from ai_cli.setting import set_setting, setting, view_setting
+from ai_cli.chat_presets import Presets, ChatPreset
 
 try:
     import openai
@@ -105,7 +107,7 @@ parser.add_argument(
 
 parser.add_argument(
     "--proxy",
-    "-p",
+    "-z",
     dest="proxy",
     type=str,
     nargs="?",
@@ -113,12 +115,27 @@ parser.add_argument(
     " this will default to that. When use socks proxy. you need install pysocks first. pip install pysocks",
 )
 
+
 command_parser = parser.add_subparsers(dest="command", help="command to run")
 
 ask_parser = command_parser.add_parser("ask", help="ask a question")
 ask_parser.add_argument("question", type=str, nargs="*", help="the question to ask")
+ask_parser.add_argument(
+    "--preset",
+    "-p",
+    help="Your custom Chat preset name to use",
+)
+
+
+unix_parser = command_parser.add_parser("unix", help="generate a script or command")
+unix_parser.add_argument("question", type=str, nargs="*", help="the question to ask")
 
 chat_parser = command_parser.add_parser("chat", help="chat with the assistant")
+chat_parser.add_argument(
+    "--preset",
+    "-p",
+    help="Your custom Chat preset name to use",
+)
 
 translate_parser = command_parser.add_parser("translate", help="translate a text")
 translate_parser.add_argument("text", type=str, nargs="*", help="the text to translate")
@@ -234,6 +251,10 @@ logger.debug("using endpoint: %s", openai.api_base)
 
 
 def _print(text, render):
+    preset = args.preset
+    if preset and Presets().get_preset(preset).no_markdown:
+        text = text.replace("`", "")
+
     content = text
     if args.raw or setting.raw:
         render(content)
@@ -246,7 +267,7 @@ def _print(text, render):
     render(markdown)
 
 
-def _ask(question, stream=False):
+def _ask(question, preset: Optional[ChatPreset] = None):
     if not openai.api_key:
         openai.api_key = Prompt.ask("OpenAI API Key", password=True)
         setting.api_key = openai.api_key
@@ -258,29 +279,33 @@ def _ask(question, stream=False):
         messages = [{"role": "user", "content": question}]
     try:
         return openai.ChatCompletion.create(
-            model=setting.model or args.model,
+            model=(preset and preset.model) or setting.model or args.model,
             messages=messages,
-            stream=stream,
+            stream=(preset and preset.stream) or True,
+            temperature=(preset and preset.temperature) or 1,
         )
     except openai.error.RateLimitError:
-        logger.warn("rate limit exceeded, sleep for 10 seconds, then retry")
-        time.sleep(10)
-        return _ask(question, stream=stream)
+        logger.warn("rate limit exceeded, sleep for 5 seconds, then retry")
+        time.sleep(5)
+        return _ask(question, preset)
 
 
-def ask(question, stream=False):
+def ask(question, preset: Optional[ChatPreset] = None):
     content = ""
+    stream: bool = preset and preset.stream or True
     if stream:
         with Live("[bold green]Asking...", refresh_per_second=3) as live:
             logger.debug("asking question: %s", question)
-            response = _ask(question, stream=stream)
+            response = _ask(question, preset)
             for v in response:
                 if v.choices and "content" in v.choices[0].delta and v.choices[0].delta.content:
                     content += v.choices[0].delta.content
                     _print(content, live.update)
     else:
         with console.status("[bold green]Asking...", spinner="point") as status:
-            response = _ask(question)
+            response = _ask(question, preset)
+            logger.info("!")
+            logger.info(response)
             content = response.choices[0].message.content
             _print(content, console.print)
             status.update("[bold green]Done!")
@@ -288,15 +313,22 @@ def ask(question, stream=False):
 
 
 def chat():
-    stream = not args.no_stream
-    messages = []
+    preset = args.preset
+    preset_model = None
+    if preset:
+        preset_model = Presets().get_preset(preset)
+        console.print(f"\nStarting with preset [bold blue]'{preset}'[/bold blue]:")
+        messages = [Presets().get_preset(preset).to_json()]
+
+    else:
+        messages = []
     while True:
         question = get_user_input("You")
         if not question:
             break
         messages.append({"role": "user", "content": question})
         console.print("\n[bold green]Assistant[/bold green]:")
-        answer = ask(messages, stream)
+        answer = ask(messages, preset_model)
         console.print("\n")
         messages.append({"role": "assistant", "content": answer})
 
@@ -335,7 +367,6 @@ def get_user_input(prompt="Please enter a question"):
 
 
 def translate():
-    stream = not args.no_stream
     text = args.text
     if args.file:
         text = _get_text_from_file()
@@ -351,21 +382,30 @@ def translate():
     else:
         question = f"{text} \n\n Please translate the above content into {args.target}"
 
-    ask(question, stream=stream)
+    ask(question)
 
 
 def ask_cmd():
-    stream = not args.no_stream
+    preset = args.preset
+    messages = []
+    preset_model = None
+    if preset:
+        preset_model = Presets().get_preset(preset)
+        messages = [preset_model.to_json()]
+        args.no_stream = preset_model.stream
+        args.raw = preset_model.no_markdown
+
     if not args.question:
         args.question = get_user_input()
     logger.debug("asking question: %s", args.question)
     if isinstance(args.question, list):
         args.question = " ".join(args.question)
-    ask(args.question, stream=stream)
+    messages.append({"role": "user", "content": args.question})
+
+    ask(messages, preset_model)
 
 
 def review_cmd():
-    stream = not args.no_stream
     if not git.is_exist_git_repo(os.getcwd()):
         console.print("[bold red]Not a git repository, please run this command in a git repository")
         exit(0)
@@ -380,7 +420,7 @@ def review_cmd():
             console.print(f"[bold red]No diff found for file: {f}")
             continue
         text = f"{diff_context} \n\n {setting.review_prompt}"
-        ask(text, stream=stream)
+        ask(text)
         Prompt.ask("[bold blue]Press enter to continue[/bold blue]")
     console.print("[bold green]Done![/bold green]")
 
