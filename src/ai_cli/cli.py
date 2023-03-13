@@ -188,6 +188,7 @@ review_parser.add_argument(
     help="the target branch/version to compare with, example: master, develop, v1.0.0, a2c3d4e, HEAD",
 )
 
+commit_parser = command_parser.add_parser("commit", help="let the assistant help you write a commit message")
 
 args = parser.parse_args()
 
@@ -378,7 +379,7 @@ def ask_cmd():
 
 def review_cmd():
     stream = not args.no_stream
-    if not git.is_exist_git_repo(os.getcwd()):
+    if not git.is_exist_git_repo():
         console.print("[bold red]Not a git repository, please run this command in a git repository")
         exit(0)
     diff_files = git.get_change_files(args.target)
@@ -407,6 +408,22 @@ def set_all_setting():
         set_setting(k, value)
 
 
+def commit_cmd():
+    if not git.is_exist_git_repo():
+        console.print("[bold red]Not a git repository, please run this command in a git repository")
+        exit(0)
+    diff_files = git.get_change_files("HEAD")
+    if not diff_files or len(diff_files) == 0:
+        console.print("[bold red]No diff files found")
+        exit(0)
+    console.print(f"[bold blue]Found {len(diff_files)} files changed[/bold blue]")
+    diff = git.get_file_diff(diff_files, "HEAD")
+    message = f"{setting.commit_prompt} \n\n {diff}"
+    result = ask(message, stream=False)
+    if Prompt.ask("[bold blue]Do you want to commit these changes?[/bold blue]", choices=["y", "n"]) == "y":
+        git.commit(result.strip())
+
+
 def setting_cmd():
     if args.edit is not None:
         if len(args.edit) == 0:
@@ -427,6 +444,7 @@ CMD = {
     "chat": chat,
     "translate": translate,
     "review": review_cmd,
+    "commit": commit_cmd,
     "setting": setting_cmd,
     "help": parser.print_help,
 }

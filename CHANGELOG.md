@@ -1,6 +1,7 @@
 Release v0.0.9
 ---------------------------
 
+- feat: add `commit` command, now you can commit your code changes by using `ai commit` command
 - feat: `ask` command now supports `--prompt` option. use `help` command to see more details
 
 Release v0.0.8
