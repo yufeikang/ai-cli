@@ -1,3 +1,8 @@
+Release v0.0.9
+---------------------------
+
+- feat: `ask` command now supports `--prompt` option. use `help` command to see more details
+
 Release v0.0.8
 ---------------------------
 

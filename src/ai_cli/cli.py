@@ -117,6 +117,16 @@ command_parser = parser.add_subparsers(dest="command", help="command to run")
 
 ask_parser = command_parser.add_parser("ask", help="ask a question")
 ask_parser.add_argument("question", type=str, nargs="*", help="the question to ask")
+ask_parser.add_argument(
+    "--prompt",
+    "-p",
+    dest="prompt",
+    type=str,
+    nargs="?",
+    help="if you want to add a prompt in front of the question."
+    " this is useful when you want to ask a question in a specific ."
+    " example: curl https://example.com | ai ask --prompt 'please get all the links from '",
+)
 
 chat_parser = command_parser.add_parser("chat", help="chat with the assistant")
 
@@ -361,6 +371,8 @@ def ask_cmd():
     logger.debug("asking question: %s", args.question)
     if isinstance(args.question, list):
         args.question = " ".join(args.question)
+    if args.prompt:
+        args.question = f"{args.prompt} \n\n {args.question}"
     ask(args.question, stream=stream)
 
 
