@@ -42,7 +42,17 @@ ai setting -e
 
 ## 使用
 
-问一个问题
+用 `ai -h` 查看支持的所有命令。
+
+* 自动生成commit message
+
+```bash
+ai commit
+```
+
+![](./asset/video/commit.gif)
+
+* 问一个问题
 
 ```bash
 ai ask "你好"
@@ -50,11 +60,13 @@ ai ask "你好"
 ai --no-stream ask "你好"
 # help
 ai ask --help
+# use pre prompt
+curl -s https://raw.githubusercontent.com/yufeikang/ai-cli/main/README.md | ai ask --prompt "summary this, how to install"
 ```
 
 ![](./asset/video/ask.gif)
 
-翻译
+* 翻译
 
 ```bash
 ai translate "你好"
@@ -66,7 +78,7 @@ cat "file.txt" | ai translate -t english
 
  ![](./asset/video/translate.gif)
 
-聊天
+* 聊天
 
 ```bash
 ai chat
@@ -74,7 +86,7 @@ ai chat
 
  ![](./asset/video/chat.gif)
 
-Code Review
+* Code Review
 
 ```bash
 ai review
