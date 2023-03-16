@@ -2,7 +2,9 @@
 import argparse
 import logging
 import os
+import subprocess
 import sys
+import tempfile
 import time
 
 from ai_cli import git
@@ -431,7 +433,25 @@ def commit_cmd():
     result = ask(message, stream=False).strip()
     if args.message:
         result = result + "\n\n" + args.message
-    if Prompt.ask("[bold blue]Do you want to commit these changes?[/bold blue]", choices=["y", "n"]) == "y":
+    action = Prompt.ask(
+        "[bold blue]Do you want to commit these changes?[/bold blue] [(Yes)y/(No)n/(Edit)e]",
+        choices=["y", "n", "e"],
+        show_choices=False,
+    )
+    # edit message use vim
+    if action == "e":
+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as f:
+            f.write(result)
+            f.flush()
+            subprocess.call(["vim", f.name])
+            with open(f.name, "r") as f:
+                result = f.read()
+        action = Prompt.ask(
+            "[bold blue]Do you want to commit these changes?[/bold blue] [(Yes)y/(No)n]",
+            choices=["y", "n"],
+            show_choices=False,
+        )
+    if action == "y":
         git.commit(result)
 
 
