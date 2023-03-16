@@ -19,7 +19,7 @@ class Setting:
     proxy = None
     multi_line_input = False
     review_prompt = "Please review the above code diff, looking for bugs and potential improvements."
-    commit_prompt = "Please generate git commit message for the above code diff."
+    commit_prompt = "Please generate git commit message for the above code diff from user. The commit message should be in the following format: <type>(<scope>): <subject>"
 
     def __iter__(self):
         for k in self.__dir__():

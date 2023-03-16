@@ -189,6 +189,14 @@ review_parser.add_argument(
 )
 
 commit_parser = command_parser.add_parser("commit", help="let the assistant help you write a commit message")
+commit_parser.add_argument(
+    "--message",
+    "-m",
+    dest="message",
+    type=str,
+    nargs="?",
+    help="the extra message to add to the commit message",
+)
 
 args = parser.parse_args()
 
@@ -274,7 +282,7 @@ def _ask(question, stream=False):
             stream=stream,
         )
     except openai.error.RateLimitError:
-        logger.warn("rate limit exceeded, sleep for 10 seconds, then retry")
+        console.print("[bold red]Rate limit exceeded, sleep for 10 seconds, then retry")
         time.sleep(10)
         return _ask(question, stream=stream)
 
@@ -418,10 +426,13 @@ def commit_cmd():
         exit(0)
     console.print(f"[bold blue]Found {len(diff_files)} files changed[/bold blue]")
     diff = git.get_file_diff(diff_files, "HEAD")
-    message = f"{setting.commit_prompt} \n\n {diff}"
-    result = ask(message, stream=False)
+    message = [{"role": "system", "content": f"{setting.commit_prompt}"}]
+    message.append({"role": "user", "content": f"{diff}"})
+    result = ask(message, stream=False).strip()
+    if args.message:
+        result = result + "\n\n" + args.message
     if Prompt.ask("[bold blue]Do you want to commit these changes?[/bold blue]", choices=["y", "n"]) == "y":
-        git.commit(result.strip())
+        git.commit(result)
 
 
 def setting_cmd():
