@@ -1,3 +1,10 @@
+Release v0.1.1
+---------------------------
+
+- fix: fix `commit` command, use --cache option to diff code changes
+- feat: the `commit` add `--message` option, you can add message to generated commit message after
+- feat: now you can edit generated commit message before commit
+
 Release v0.1.0
 ---------------------------
 
