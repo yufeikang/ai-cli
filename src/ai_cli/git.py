@@ -2,7 +2,8 @@ import logging
 import os
 import shlex
 import subprocess
-from typing import Collection, Tuple, Union
+import sys
+from typing import Callable, Collection, Optional, Tuple, Union
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +13,7 @@ DIFF_EXCLUDE = [
 ]
 
 
-def _run_command(command: Union[str, Collection]) -> Tuple[int, bytes]:
+def _run_command(command: Union[str, Collection], output_callback=None) -> Tuple[int, bytes]:
     """Run a command in a shell.
 
     Args:
@@ -26,9 +27,18 @@ def _run_command(command: Union[str, Collection]) -> Tuple[int, bytes]:
         command = shlex.join(command)
     logger.debug("Run command: {}".format(command))
     p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    output = p.stdout.read()
-    p.wait()
-    logger.debug("Command output: {}".format(output))
+    output = b""
+    if output_callback:
+        while True:
+            _line = p.stdout.readline()
+            if not _line:
+                break
+            output += _line
+            output_callback(_line)
+    else:
+        output = p.stdout.read()
+        p.wait()
+        logger.debug("Command output: {}".format(output))
     return p.returncode, output
 
 
@@ -137,7 +147,7 @@ def commit(message):
     Returns:
         bool: True if the commit succeed, False otherwise.
     """
-    res, output = _run_command(["git", "commit", "-m", message])
+    res, output = _run_command(["git", "commit", "-m", message], lambda x: sys.stdout.write(x.decode("utf-8")))
     if res != 0:
         logging.error("git command failed")
         return False
