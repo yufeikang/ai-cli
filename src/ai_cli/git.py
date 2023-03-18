@@ -144,14 +144,8 @@ def commit(message):
     Args:
         message (str): The commit message.
 
-    Returns:
-        bool: True if the commit succeed, False otherwise.
     """
-    res, output = _run_command(["git", "commit", "-m", message], lambda x: sys.stdout.write(x.decode("utf-8")))
-    if res != 0:
-        logging.error("git command failed")
-        return False
-    return True
+    _run_command(["git", "commit", "-m", message], lambda x: sys.stdout.write(x.decode("utf-8")))
 
 
 if __name__ == "__main__":
