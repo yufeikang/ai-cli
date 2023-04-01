@@ -1,10 +1,10 @@
 # AI Tools for chatGPT
 
-这个cli工具可以让你方便的在命令行中使用chatGPT。你可以和他聊天，也可以让他帮你回答问题。也可以帮你翻译文本。并且支持markdown在终端中的渲染。
+这个cli工具可以让你方便的在命令行中使用chatGPT或者new bing。你可以和他聊天，也可以让他帮你回答问题。也可以帮你翻译文本。并且支持markdown在终端中的渲染。
 
 [![PyPI](https://img.shields.io/pypi/v/py-ai-cli?logo=python&logoColor=%23cccccc)](https://pypi.org/project/py-ai-cli)
 
- [English](README.md)| [中文](README_zh.md) | [日本語](README_ja.md)
+ [English](README.md) | [中文](README_zh.md) | [日本語](README_ja.md)
 
 ## 依赖
 
@@ -16,6 +16,16 @@
 * OPENAI_API_KEY
 
 可以设定环境变量`OPENAI_API_KEY`，也可以通过`--api-key`参数指定。也可通过`ai setting`命令来设置。
+
+* Bing Cookie
+
+如果使用Bing Bot需要设置Bing Cookie。可以通过`ai setting`命令来设置。
+
+```bash
+ai setting --edit bing_cookie="BING_COOKIE.JSON"
+```
+
+Cookie 获取方式参考：[Bing Bot Cookie获取](https://github.com/acheong08/EdgeGPT#checking-access-required)
 
 ## 安装
 

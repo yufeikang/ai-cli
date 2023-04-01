@@ -5,9 +5,9 @@ import os
 import subprocess
 import sys
 import tempfile
-import time
 
-from ai_cli import git
+from ai_cli import git, init_logging
+from ai_cli.bot import Bot, get_bot
 from ai_cli.setting import set_setting, setting, view_setting
 
 try:
@@ -76,6 +76,15 @@ parser.add_argument(
     default="INFO",
     choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
     help="the log level to use, defaults to INFO",
+)
+parser.add_argument(
+    "--bot",
+    "-b",
+    dest="bot",
+    type=str,
+    nargs="?",
+    choices=["GPTBot", "BingBot"],
+    help="the bot to use, defaults to GPTBot",
 )
 parser.add_argument(
     "--debug",
@@ -202,15 +211,9 @@ commit_parser.add_argument(
 
 args = parser.parse_args()
 
-logger = logging.getLogger("cli")
+init_logging(setting.log_level if not args.debug else "DEBUG")
 
-if args.debug or setting.debug:
-    logging.basicConfig(level=logging.DEBUG)
-    logger.setLevel("DEBUG")
-    logger.debug("debug mode enabled")
-else:
-    logging.basicConfig()
-    logger.setLevel(args.log_level)
+logger = logging.getLogger(__name__)
 
 if args.api_key:
     openai.api_key = args.api_key
@@ -268,25 +271,9 @@ def _print(text, render):
 
 
 def _ask(question, stream=False):
-    if not openai.api_key:
-        openai.api_key = Prompt.ask("OpenAI API Key", password=True)
-        setting.api_key = openai.api_key
-        set_setting("api_key", openai.api_key)
-    messages = []
-    if isinstance(question, list):
-        messages = question
-    else:
-        messages = [{"role": "user", "content": question}]
-    try:
-        return openai.ChatCompletion.create(
-            model=setting.model or args.model,
-            messages=messages,
-            stream=stream,
-        )
-    except openai.error.RateLimitError:
-        console.print("[bold red]Rate limit exceeded, sleep for 10 seconds, then retry")
-        time.sleep(10)
-        return _ask(question, stream=stream)
+    bot_type = args.bot or setting.bot
+    bot: Bot = get_bot(setting=setting, bot_type=bot_type)
+    return bot.ask(question, stream=stream)
 
 
 def ask(question, stream=False):
@@ -295,14 +282,11 @@ def ask(question, stream=False):
         with Live("[bold green]Asking...", refresh_per_second=3) as live:
             logger.debug("asking question: %s", question)
             response = _ask(question, stream=stream)
-            for v in response:
-                if v.choices and "content" in v.choices[0].delta and v.choices[0].delta.content:
-                    content += v.choices[0].delta.content
-                    _print(content, live.update)
+            for content in response:
+                _print(content, live.update)
     else:
         with console.status("[bold green]Asking...", spinner="point") as status:
-            response = _ask(question)
-            content = response.choices[0].message.content
+            content = _ask(question)
             _print(content, console.print)
             status.update("[bold green]Done!")
     return content
@@ -310,16 +294,13 @@ def ask(question, stream=False):
 
 def chat():
     stream = not args.no_stream
-    messages = []
     while True:
         question = get_user_input("You")
         if not question:
             break
-        messages.append({"role": "user", "content": question})
         console.print("\n[bold green]Assistant[/bold green]:")
-        answer = ask(messages, stream)
+        ask(question, stream)
         console.print("\n")
-        messages.append({"role": "assistant", "content": answer})
 
 
 def _get_text_from_clipboard():
@@ -368,11 +349,10 @@ def translate():
         text = " ".join(text)
     logger.debug("translating text: %s", text)
     if args.source:
-        question = f"{text} \n\n Please translate the above content from {args.source} to {args.target}"
+        text = f"{text} \n\n Please translate the above content from {args.source} to {args.target}"
     else:
-        question = f"{text} \n\n Please translate the above content into {args.target}"
-
-    ask(question, stream=stream)
+        text = f"{text} \n\n Please translate the above content into {args.target}"
+    ask(text, stream=stream)
 
 
 def ask_cmd():

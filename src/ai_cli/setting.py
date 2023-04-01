@@ -4,8 +4,17 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 
+from ai_cli import CONFIG_DIR
+
 console = Console()
-setting_file = Path.home() / ".ai_cli.json"
+
+setting_file = CONFIG_DIR / "setting.json"
+
+# migrate old setting file
+old_setting_file = Path.home() / ".ai_cli.json"
+if old_setting_file.exists() and not setting_file.exists():
+    setting_file.parent.mkdir(parents=True, exist_ok=True)
+    old_setting_file.rename(setting_file)
 
 
 class Setting:
@@ -13,11 +22,13 @@ class Setting:
     endpoint = "https://api.openai.com/v1"
     model = "gpt-3.5-turbo"
     no_stream = False
+    bot = "GPTBot"  # GPTBot, BingBot,
     raw = False
     log_level = "INFO"
     debug = False
     proxy = None
     multi_line_input = False
+    bing_cookie = None
     review_prompt = "Please review the above code diff, looking for bugs and potential improvements."
     commit_prompt = "Please generate git commit message for the above code diff from user. The commit message should be in the following format: <type>(<scope>): <subject>"
 

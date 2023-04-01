@@ -1,3 +1,10 @@
+Release v0.2.0
+---------------------------
+
+- feat: now support **New Bing** bot, you can use `ai setting --edit bot=BingBot` to switch to it
+- feat: add `--bot` option to `ask` command, you can use `ai ask --bot BingBot "Hello"` to use BingBot
+- refactor: setting file moved to `~/.config/ai_cli/setting.json`
+
 Release v0.1.1
 ---------------------------
 
