@@ -75,17 +75,21 @@ class Bot(ABC):
 
     @abstractmethod
     def _ask(self, question: str, stream=None) -> Union[str, Generator]:
-        ...
+        pass
 
     def ask(self, question: str, stream=None) -> Union[str, Generator]:
         stream = self.stream if stream is None else stream
+        logger.info(f"Ask: {question} stream: {stream}")
         question_id = self.history.add_question(question)
-        if not self.stream:
-            answer = self._ask(question, stream=self.stream)
+        if not stream:
+            answer = self._ask(question, stream=stream)
+            if isinstance(answer, Generator):
+                answer = list(answer)[0]
+            logger.info(f"Answer: {answer}")
             self.history.add_answer(question_id, answer)
             return answer
         else:
-            return (self.history.add_answer(question_id, a) for a in self._ask(question, stream=self.stream))
+            return (self.history.add_answer(question_id, a) for a in self._ask(question, stream=stream))
 
 
 class GPTBot(Bot):
@@ -105,7 +109,7 @@ class GPTBot(Bot):
             response = openai.ChatCompletion.create(model=self.setting.model, messages=messages, stream=stream)
             if not stream:
                 logger.debug(f"Answer: {json.dumps(response, ensure_ascii=False)}")
-                return response.choices[0].message.content
+                yield response.choices[0].message.content
             else:
                 for v in response:
                     logger.debug(f"Answer stream: {json.dumps(v, ensure_ascii=False)}")
@@ -126,12 +130,11 @@ class BingBot(Bot):
         logger.info(f"BingBot init, cookie path: {setting.bing_cookie}")
 
     def _ask(self, question: str, stream=None) -> Union[str, Generator]:
-        stream = self.stream if stream is None else stream
         if not stream:
             result = asyncio.run(self.bot.ask(question, conversation_style=self.style))
             logger.debug(f"Answer: {json.dumps(result, ensure_ascii=False)}")
             messages = result.get("item").get("messages")
-            return messages[len(messages) - 1].get("text")
+            yield messages[len(messages) - 1].get("text")
         else:
             gen = self.bot.chat_hub.ask_stream(
                 question, conversation_style=self.style, wss_link="wss://sydney.bing.com/sydney/ChatHub"

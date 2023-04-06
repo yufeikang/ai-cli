@@ -286,7 +286,7 @@ def ask(question, stream=False):
                 _print(content, live.update)
     else:
         with console.status("[bold green]Asking...", spinner="point") as status:
-            content = _ask(question)
+            content = _ask(question, stream=stream)
             _print(content, console.print)
             status.update("[bold green]Done!")
     return content
@@ -408,8 +408,7 @@ def commit_cmd():
         exit(0)
     console.print(f"[bold blue]Found {len(diff_files)} files changed[/bold blue]")
     diff = git.get_file_diff(diff_files, "HEAD")
-    message = [{"role": "system", "content": f"{setting.commit_prompt}"}]
-    message.append({"role": "user", "content": f"{diff}"})
+    message = f"{setting.commit_prompt} \m\n\n {diff}"
     result = ask(message, stream=False).strip()
     if args.message:
         result = result + "\n\n" + args.message

@@ -1,4 +1,4 @@
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 import logging
 import os
@@ -13,7 +13,7 @@ LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def init_logging(log_level: int = logging.INFO):
-    log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    log_format = "%(asctime)s - %(name)s:%(lineno)d - %(levelname)s - %(message)s"
     log_file = LOG_DIR / "ai_cli.log"
     fh = RotatingFileHandler(log_file, maxBytes=1024 * 1024 * 10, backupCount=7)
     logging.basicConfig(level=logging.WARNING, handlers=[fh], format=log_format)
