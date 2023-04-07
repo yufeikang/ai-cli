@@ -108,11 +108,9 @@ class GPTBot(Bot):
         try:
             response = openai.ChatCompletion.create(model=self.setting.model, messages=messages, stream=stream)
             if not stream:
-                logger.debug(f"Answer: {json.dumps(response, ensure_ascii=False)}")
                 yield response.choices[0].message.content
             else:
                 for v in response:
-                    logger.debug(f"Answer stream: {json.dumps(v, ensure_ascii=False)}")
                     if "content" in v.choices[0].delta:
                         yield v.choices[0].delta.content
         except openai.error.RateLimitError:
