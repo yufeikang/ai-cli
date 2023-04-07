@@ -1,3 +1,8 @@
+Release v0.3.0
+---------------------------
+
+- feat: `chat` and `review` command now can auto summary previous conversation.
+
 Release v0.2.0
 ---------------------------
 
