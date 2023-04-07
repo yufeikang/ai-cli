@@ -29,6 +29,7 @@ class Setting:
     proxy = None
     multi_line_input = False
     bing_cookie = None
+    max_tokens = 4096
     review_prompt = "Please review the above code diff, looking for bugs and potential improvements."
     commit_prompt = "Please generate git commit message for the above code diff from user. The commit message should be in the following format: <type>(<scope>): <subject>"
 

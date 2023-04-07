@@ -798,6 +798,16 @@ requires_python = ">=3.7"
 summary = "Sniff out which async library your code is running under"
 
 [[package]]
+name = "tiktoken"
+version = "0.3.3"
+requires_python = ">=3.8"
+summary = "tiktoken is a fast BPE tokeniser for use with OpenAI's models"
+dependencies = [
+    "regex>=2022.1.18",
+    "requests>=2.26.0",
+]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 requires_python = ">=3.7"
@@ -933,7 +943,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
 lock_version = "4.1"
-content_hash = "sha256:d0977fec96502457c5729493031c2b9a2ea4772e5054f7a4b4495957580f9f60"
+content_hash = "sha256:40c714664a1c12ae8b89c3a8cebf96abfe806c2a4cdcdeda41435a9c3ba9cb71"
 
 [metadata.files]
 "aiohttp 3.8.4" = [
@@ -1898,6 +1908,37 @@ content_hash = "sha256:d0977fec96502457c5729493031c2b9a2ea4772e5054f7a4b44959575
 "sniffio 1.3.0" = [
     {url = "https://files.pythonhosted.org/packages/c3/a0/5dba8ed157b0136607c7f2151db695885606968d1fae123dc3391e0cfdbf/sniffio-1.3.0-py3-none-any.whl", hash = "sha256:eecefdce1e5bbfb7ad2eeaabf7c1eeb404d7757c379bd1f7e5cce9d8bf425384"},
     {url = "https://files.pythonhosted.org/packages/cd/50/d49c388cae4ec10e8109b1b833fd265511840706808576df3ada99ecb0ac/sniffio-1.3.0.tar.gz", hash = "sha256:e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101"},
+]
+"tiktoken 0.3.3" = [
+    {url = "https://files.pythonhosted.org/packages/05/bd/1e526343777747091527a5c2a4620c0fc8624dd7491d0a004e4600da1773/tiktoken-0.3.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:984758ebc07cd8c557345697c234f1f221bd730b388f4340dd08dffa50213a01"},
+    {url = "https://files.pythonhosted.org/packages/16/8c/63ae6e51c5db57d1c3a0d039eec9ba083d433dfad946098b2c80aed3e26d/tiktoken-0.3.3-cp311-cp311-win_amd64.whl", hash = "sha256:5dca434c8680b987eacde2dbc449e9ea4526574dbf9f3d8938665f638095be82"},
+    {url = "https://files.pythonhosted.org/packages/17/ba/2ec67844ecff98713642b984d67785d44b8912e287c436a3dcad9c6c8deb/tiktoken-0.3.3-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:3d7296c38392a943c2ccc0b61323086b8550cef08dcf6855de9949890dbc1fd3"},
+    {url = "https://files.pythonhosted.org/packages/1a/b1/b4115ac3c1275e652778659399d25af96db1fa7303bdbded16e04ee1807b/tiktoken-0.3.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:65970d77ea85ce6c7fce45131da9258cd58a802ffb29ead8f5552e331c025b2b"},
+    {url = "https://files.pythonhosted.org/packages/21/30/24414483fbed84fc6386d627f19af80798ad116108e734b614f0377f0637/tiktoken-0.3.3-cp310-cp310-win_amd64.whl", hash = "sha256:dc00772284c94e65045b984ed7e9f95d000034f6b2411df252011b069bd36217"},
+    {url = "https://files.pythonhosted.org/packages/22/8a/ae44b33e2fae7dab82a1d167d2836b8c7e6002d5660e36c9b294e8df1a27/tiktoken-0.3.3-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:210f8602228e4c5d706deeb389da5a152b214966a5aa558eec87b57a1969ced5"},
+    {url = "https://files.pythonhosted.org/packages/4d/4e/ae9b67a0b28467430c146804c0762f9b9865da4e91a079142dfa76b3e6e4/tiktoken-0.3.3-cp38-cp38-win_amd64.whl", hash = "sha256:94600798891f78db780e5aa9321456cf355e54a4719fbd554147a628de1f163f"},
+    {url = "https://files.pythonhosted.org/packages/4f/81/e1aec7c49648461b5993c2ce7b2716b079b58980f49cf202372bbb6ca339/tiktoken-0.3.3-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:a11674f0275fa75fb59941b703650998bd4acb295adbd16fc8af17051aaed19d"},
+    {url = "https://files.pythonhosted.org/packages/76/fe/84d4228176c8e08977eb3750df7ccf1b6ce821a11665482044572abed1e2/tiktoken-0.3.3-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:03f64bde9b4eb8338bf49c8532bfb4c3578f6a9a6979fc176d939f9e6f68b408"},
+    {url = "https://files.pythonhosted.org/packages/82/30/a51518365988dda949c358692999d1e9966b41dcb046182427635b314703/tiktoken-0.3.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3a43612b2a09f4787c050163a216bf51123851859e9ab128ad03d2729826cde9"},
+    {url = "https://files.pythonhosted.org/packages/8b/75/02d1baa6247c2d7f7fbba54375e86c73a786729dbe258c2b74c639eeed90/tiktoken-0.3.3-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:bd3f72d0ba7312c25c1652292121a24c8f1711207b63c6d8dab21afe4be0bf04"},
+    {url = "https://files.pythonhosted.org/packages/8c/22/86075db0dfde9feb72d47d64b9583fd50e2bcc3a116e9acd27738b11b192/tiktoken-0.3.3-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:dd783564f80d4dc44ff0a64b13756ded8390ed2548549aefadbe156af9188307"},
+    {url = "https://files.pythonhosted.org/packages/8e/3a/20704b89b271cfebb1c981ef9f172fb18cb879b5c5cfc3b209083f71b229/tiktoken-0.3.3.tar.gz", hash = "sha256:97b58b7bfda945791ec855e53d166e8ec20c6378942b93851a6c919ddf9d0496"},
+    {url = "https://files.pythonhosted.org/packages/8f/d0/9b7b843cc68fbd7d8147d6e7891a4c3a1bd83dc5b31e37dc1347fdab0ca9/tiktoken-0.3.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:d1f37fa75ba70c1bc7806641e8ccea1fba667d23e6341a1591ea333914c226a9"},
+    {url = "https://files.pythonhosted.org/packages/93/86/5d2e0b45b1bc767a3ae8655eeb2a17e5954eee698c7cd52e09fc69353373/tiktoken-0.3.3-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:542686cbc9225540e3a10f472f82fa2e1bebafce2233a211dee8459e95821cfd"},
+    {url = "https://files.pythonhosted.org/packages/a6/02/dac0c35f81b025eff0b947aae4f22505aab852ac225f2418ff33bde521e5/tiktoken-0.3.3-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:48c13186a479de16cfa2c72bb0631fa9c518350a5b7569e4d77590f7fee96be9"},
+    {url = "https://files.pythonhosted.org/packages/ac/48/f273b724f659207b4e84c5dd7d5ef220f5714f0cfbc5945dd0e1910bf8d0/tiktoken-0.3.3-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:1ac369367b6f5e5bd80e8f9a7766ac2a9c65eda2aa856d5f3c556d924ff82986"},
+    {url = "https://files.pythonhosted.org/packages/b0/dd/573493be4608a803ae85ba51b3f0be3fc92a321a3c4ca2abc0c594e4bf94/tiktoken-0.3.3-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:4a0c1357f6191211c544f935d5aa3cb9d7abd118c8f3c7124196d5ecd029b4af"},
+    {url = "https://files.pythonhosted.org/packages/b8/4d/dddefbb2b9d1bfae6fda13d29a76a4d7da95d595aff105fc86632bb62a7e/tiktoken-0.3.3-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:65fc0a449630bab28c30b4adec257442a4706d79cffc2337c1d9df3e91825cdd"},
+    {url = "https://files.pythonhosted.org/packages/ba/c0/44066de4a112e26808e0bd1ce200020446e211e8ae1ba5f27eaec5a723da/tiktoken-0.3.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6674e4e37ab225020135cd66a392589623d5164c6456ba28cc27505abed10d9e"},
+    {url = "https://files.pythonhosted.org/packages/bb/5f/ebe141f6e192d9b4d9f904b095e63c234810f93f43928bb4ce18ca25f148/tiktoken-0.3.3-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:19340d8ba4d6fd729b2e3a096a547ded85f71012843008f97475f9db484869ee"},
+    {url = "https://files.pythonhosted.org/packages/c1/9f/1ae00472c6a7a5e0ad94cf15b33b7bf60609d4882d974ea7ef0abb3f2857/tiktoken-0.3.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:e59db6fca8d5ccea302fe2888917364446d6f4201a25272a1a1c44975c65406a"},
+    {url = "https://files.pythonhosted.org/packages/c4/1c/15e8a21bf4256b622c3ff3ce41b01f2cae7d0d2e4ee15d19e1f1eb990884/tiktoken-0.3.3-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:2e948d167fc3b04483cbc33426766fd742e7cefe5346cd62b0cbd7279ef59539"},
+    {url = "https://files.pythonhosted.org/packages/cf/05/7740974b7fe89573ca752226a9a0b7483fa4c39dbf7f393522f3a0189bf2/tiktoken-0.3.3-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:719c9e13432602dc496b24f13e3c3ad3ec0d2fbdb9aace84abfb95e9c3a425a4"},
+    {url = "https://files.pythonhosted.org/packages/d6/a1/e7b2bd5a447c9de9b4a842af0f13872ee844f584832542c6eceb53bf7c8c/tiktoken-0.3.3-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:e3c0f2231aa3829a1a431a882201dc27858634fd9989898e0f7d991dbc6bcc9d"},
+    {url = "https://files.pythonhosted.org/packages/e9/b4/c0dfa23742e72ac608e73932a8df2dde6730fc5398c0d594fd36c927891b/tiktoken-0.3.3-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:4db2c40f79f8f7a21a9fdbf1c6dee32dea77b0d7402355dc584a3083251d2e15"},
+    {url = "https://files.pythonhosted.org/packages/ea/00/093ba3c68d7e5e20e3df9222c1456ae79c669af79b63f9a7e481335e55fe/tiktoken-0.3.3-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:891012f29e159a989541ae47259234fb29ff88c22e1097567316e27ad33a3734"},
+    {url = "https://files.pythonhosted.org/packages/ea/4a/6d2a43e7af1f95e2edfb4a617cf500a96ee9cad1568e321b763b974becca/tiktoken-0.3.3-cp39-cp39-win_amd64.whl", hash = "sha256:0b9a7a9a8b781a50ee9289e85e28771d7e113cc0c656eadfb6fc6d3a106ff9bb"},
+    {url = "https://files.pythonhosted.org/packages/ed/0b/cc13d89497e3eac112a368b69db0cfbad303e33a70ed89dbd6cbf3ba85bc/tiktoken-0.3.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3c84491965e139a905280ac28b74baaa13445b3678e07f96767089ad1ef5ee7b"},
 ]
 "tomli 2.0.1" = [
     {url = "https://files.pythonhosted.org/packages/97/75/10a9ebee3fd790d20926a90a2547f0bf78f371b2f13aa822c759680ca7b9/tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
