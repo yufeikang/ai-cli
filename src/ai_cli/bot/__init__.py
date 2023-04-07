@@ -178,6 +178,8 @@ class BingBot(Bot):
             self.current_conversation = throttling.get("numUserMessagesInConversation")
 
     def should_summarize(self) -> bool:
+        if self.max_conversation is None:
+            return super().should_summarize()
         if self.current_conversation + 1 >= self.max_conversation:
             logger.info(
                 f"Conversation count: {self.current_conversation + 1} >= {self.max_conversation}, should summarize"
