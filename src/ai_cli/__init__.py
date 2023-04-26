@@ -1,7 +1,6 @@
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 
 import logging
-import os
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
