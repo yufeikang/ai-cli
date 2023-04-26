@@ -74,7 +74,7 @@ setting: Setting = Setting()
 
 if not setting_file.exists():
     setting_file.touch()
-    json.dump(dict(setting), setting_file.open("w"))
+    json.dump(dict(setting), setting_file.open("w"), ensure_ascii=False, indent=2)
 else:
     setting = read_setting()
 
@@ -95,7 +95,7 @@ def view_setting():
 
 def save_setting(setting: Setting):
     with setting_file.open("w") as f:
-        json.dump(setting.__dict__(), f)
+        json.dump(setting.__dict__(), f, ensure_ascii=False, indent=2)
 
 
 def set_setting(k, v):
