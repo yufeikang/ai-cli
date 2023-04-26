@@ -19,7 +19,7 @@ if old_setting_file.exists() and not setting_file.exists():
 
 class Setting:
     api_key = None
-    endpoint = "https://api.openai.com/v1"
+    endpoint = None
     model = "gpt-3.5-turbo"
     no_stream = False
     bot = "GPTBot"  # GPTBot, BingBot,
@@ -48,8 +48,8 @@ class Setting:
     def set(self, k, v):
         if not hasattr(self, k):
             return
-        if v is None:
-            return
+        if v in ["None", "none"]:
+            v = None
         setattr(self, k, v)
 
     @classmethod
