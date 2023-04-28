@@ -85,7 +85,7 @@ class Bot(ABC):
     def __init__(self, setting: Setting):
         self.setting = setting
         self.history = ChatHistoryContainer()
-        self.stream = not setting.no_stream
+        self.stream = not setting.no_stream.get_value()
 
     @abstractmethod
     def _ask(self, question: str, stream=None) -> Union[str, Generator]:
@@ -117,8 +117,8 @@ class Bot(ABC):
 class GPTBot(Bot):
     def __init__(self, setting: Setting):
         super().__init__(setting)
-        self.model = setting.model
-        self.max_tokens = setting.max_tokens
+        self.model = setting.model.get_value()
+        self.max_tokens = setting.max_tokens.get_value()
 
     def get_messages(self):
         for h in self.history:
@@ -146,8 +146,9 @@ class GPTBot(Bot):
 
     def _ask(self, question: str, stream=None) -> Union[str, Generator]:
         messages = list(self.get_messages())
+        logger.debug(f"Messages: {messages}, model: {self.model}, stream: {stream}")
         try:
-            response = openai.ChatCompletion.create(model=self.setting.model, messages=messages, stream=stream)
+            response = openai.ChatCompletion.create(model=self.model, messages=messages, stream=stream)
             if not stream:
                 yield response.choices[0].message.content
             else:
@@ -165,8 +166,8 @@ class BingBot(Bot):
         super().__init__(setting)
         self.style = ConversationStyle.creative
         self.history.answer_append = False
-        self.bot = Chatbot(cookiePath=setting.bing_cookie)
-        logger.info(f"BingBot init, cookie path: {setting.bing_cookie}")
+        self.bot = Chatbot(cookiePath=setting.bing_cookie.get_value())
+        logger.info(f"BingBot init, cookie path: {setting.bing_cookie.get_value()}")
         self.max_conversation = None
         self.current_conversation = 0
         self.prefix_prompt = None
@@ -191,7 +192,7 @@ class BingBot(Bot):
         # reset conversation
         summary = list(self._ask("", stream=False))[0]
         logger.info(f"Summarize: {summary}")
-        self.bot = Chatbot(cookiePath=self.setting.bing_cookie)
+        self.bot = Chatbot(cookiePath=self.setting.bing_cookie.get_value())
         self.prefix_prompt = summary
 
     def _get_question(self, question: str) -> str:

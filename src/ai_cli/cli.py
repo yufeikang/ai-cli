@@ -211,22 +211,22 @@ commit_parser.add_argument(
 
 args = parser.parse_args()
 
-init_logging(setting.log_level if not args.debug else "DEBUG")
+init_logging(setting.log_level.get_value() if not args.debug else "DEBUG")
 
 logger = logging.getLogger(__name__)
 
 if args.api_key:
     openai.api_key = args.api_key
-elif setting.api_key:
-    openai.api_key = setting.api_key
+elif setting.api_key.get_value():
+    openai.api_key = setting.api_key.get_value()
 elif "OPENAI_API_KEY" in os.environ:
     openai.api_key = os.environ["OPENAI_API_KEY"]
 
 proxy = None
 if args.proxy:
     proxy = args.proxy
-elif setting.proxy:
-    proxy = setting.proxy
+elif setting.proxy.get_value():
+    proxy = setting.proxy.get_value()
 elif "HTTP_PROXY" in os.environ:
     proxy = os.environ["HTTP_PROXY"]
 elif "HTTPS_PROXY" in os.environ:
@@ -249,8 +249,8 @@ if proxy:
 
 if args.endpoint:
     openai.api_base = args.endpoint
-elif setting.endpoint:
-    openai.api_base = setting.endpoint
+elif setting.endpoint.get_value():
+    openai.api_base = setting.endpoint.get_value()
 elif "OPENAI_API_BASE" in os.environ:
     openai.api_base = os.environ["OPENAI_API_BASE"]
 
@@ -259,7 +259,7 @@ logger.debug("using endpoint: %s", openai.api_base)
 
 def _print(text, render):
     content = text
-    if args.raw or setting.raw:
+    if args.raw or setting.raw.get_value():
         render(content)
         return
     markdown = Markdown(
@@ -271,7 +271,7 @@ def _print(text, render):
 
 
 def _ask(question, stream=False):
-    bot_type = args.bot or setting.bot
+    bot_type = args.bot or setting.bot.get_value()
     bot: Bot = get_bot(setting=setting, bot_type=bot_type)
     return bot.ask(question, stream=stream)
 
@@ -327,7 +327,7 @@ def _get_text_from_file():
 
 def get_user_input(prompt="Please enter a question"):
     logger.debug("reading question from stdin")
-    multi_line_input = setting.multi_line_input or args.multi_line_input
+    multi_line_input = setting.multi_line_input.get_value() or args.multi_line_input
     if sys.stdin.isatty():
         if multi_line_input:
             console.print(f"[bold blue]{prompt}:, Ctrl+D end input[/bold blue]")
@@ -382,7 +382,7 @@ def review_cmd():
         if not diff_context:
             console.print(f"[bold red]No diff found for file: {f}")
             continue
-        text = f"{diff_context} \n\n {setting.review_prompt}"
+        text = f"{diff_context} \n\n {setting.review_prompt.get_value()}"
         ask(text, stream=stream)
         Prompt.ask("[bold blue]Press enter to continue[/bold blue]")
     console.print("[bold green]Done![/bold green]")
@@ -408,7 +408,7 @@ def commit_cmd():
         exit(0)
     console.print(f"[bold blue]Found {len(diff_files)} files changed[/bold blue]")
     diff = git.get_file_diff(diff_files, "HEAD")
-    message = f"{setting.commit_prompt} \n\n {diff}"
+    message = f"{setting.commit_prompt.get_value()} \n\n {diff}"
     result = ask(message, stream=False).strip()
     if args.message:
         result = result + "\n\n" + args.message
