@@ -132,3 +132,9 @@ SOCKS5 proxy requires `pip install pysocks`.
 ## Additional Information
 
 Please use `ai --help` to view more commands.
+
+## Thanks
+
+![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
+
+This project is developed using [JetBrains](https://www.jetbrains.com/) products.
