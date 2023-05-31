@@ -127,7 +127,7 @@ def get_file_diff(path, target):
             _path = os.path.join(git_root, _path).split(current + "/")[1]
         return _path
 
-    cmd = ["git", "--no-pager", "diff", "--cached", target]
+    cmd = ["git", "--no-pager", "diff", "--cached", "--", target]
     _path = _join_path(path)
     if _path:
         cmd.extend([_path] if isinstance(_path, str) else _path)
