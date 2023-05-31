@@ -1,3 +1,8 @@
+Release v0.3.4
+---------------------------
+
+- fix: `commit` command error when delete file from git
+
 Release v0.3.2
 ---------------------------
 
