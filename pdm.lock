@@ -54,10 +54,10 @@ summary = "Classes Without Boilerplate"
 
 [[package]]
 name = "bingimagecreator"
-version = "0.1.4"
+version = "0.4.2"
 summary = "High quality image generation by Microsoft. Reverse engineered API."
 dependencies = [
-    "aiohttp",
+    "httpx",
     "regex",
     "requests",
 ]
@@ -174,12 +174,13 @@ summary = "Distribution utilities"
 
 [[package]]
 name = "edgegpt"
-version = "0.3.4.2"
+version = "0.11.1"
 summary = "Reverse engineered Edge Chat API"
 dependencies = [
-    "BingImageCreator>=0.1.2.1",
+    "BingImageCreator>=0.3.0",
+    "aiohttp",
     "certifi",
-    "httpx",
+    "httpx[socks]>=0.24.0",
     "prompt-toolkit",
     "requests",
     "rich",
@@ -256,14 +257,25 @@ dependencies = [
 
 [[package]]
 name = "httpx"
-version = "0.23.3"
+version = "0.24.1"
 requires_python = ">=3.7"
 summary = "The next generation HTTP client."
 dependencies = [
     "certifi",
-    "httpcore<0.17.0,>=0.15.0",
-    "rfc3986[idna2008]<2,>=1.3",
+    "httpcore<0.18.0,>=0.15.0",
+    "idna",
     "sniffio",
+]
+
+[[package]]
+name = "httpx"
+version = "0.24.1"
+extras = ["socks"]
+requires_python = ">=3.7"
+summary = "The next generation HTTP client."
+dependencies = [
+    "httpx==0.24.1",
+    "socksio==1.*",
 ]
 
 [[package]]
@@ -749,21 +761,6 @@ version = "1.0.1"
 summary = "Resolve abstract dependencies into concrete ones"
 
 [[package]]
-name = "rfc3986"
-version = "1.5.0"
-summary = "Validating URI References per RFC 3986"
-
-[[package]]
-name = "rfc3986"
-version = "1.5.0"
-extras = ["idna2008"]
-summary = "Validating URI References per RFC 3986"
-dependencies = [
-    "idna",
-    "rfc3986==1.5.0",
-]
-
-[[package]]
 name = "rich"
 version = "13.3.5"
 requires_python = ">=3.7.0"
@@ -797,6 +794,12 @@ name = "sniffio"
 version = "1.3.0"
 requires_python = ">=3.7"
 summary = "Sniff out which async library your code is running under"
+
+[[package]]
+name = "socksio"
+version = "1.0.0"
+requires_python = ">=3.6"
+summary = "Sans-I/O implementation of SOCKS4, SOCKS4A, and SOCKS5."
 
 [[package]]
 name = "tiktoken"
@@ -943,7 +946,9 @@ requires_python = ">=3.7"
 summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
-lock_version = "4.1"
+lock_version = "4.2"
+cross_platform = true
+groups = ["default", "dev", "doc", "test", "tox", "workflow"]
 content_hash = "sha256:012ebfae9b7f7735694a5e552be003bbb0d56820ab8c5f140973c68a1cdb322c"
 
 [metadata.files]
@@ -1056,9 +1061,9 @@ content_hash = "sha256:012ebfae9b7f7735694a5e552be003bbb0d56820ab8c5f140973c68a1
     {url = "https://files.pythonhosted.org/packages/21/31/3f468da74c7de4fcf9b25591e682856389b3400b4b62f201e65f15ea3e07/attrs-22.2.0.tar.gz", hash = "sha256:c9227bfc2f01993c03f68db37d1d15c9690188323c067c641f1a35ca58185f99"},
     {url = "https://files.pythonhosted.org/packages/fb/6e/6f83bf616d2becdf333a1640f1d463fef3150e2e926b7010cb0f81c95e88/attrs-22.2.0-py3-none-any.whl", hash = "sha256:29e95c7f6778868dbd49170f98f8818f78f3dc5e0e37c0b1f474e3561b240836"},
 ]
-"bingimagecreator 0.1.4" = [
-    {url = "https://files.pythonhosted.org/packages/4d/b5/f9963c0ab655f26765133b3bcff06539041ac951f1495caad0882c5188aa/BingImageCreator-0.1.4-py3-none-any.whl", hash = "sha256:ea2400a887baacf68522195bf5419b0e190694ed470d964120a7d16d7c7cdda6"},
-    {url = "https://files.pythonhosted.org/packages/f0/80/b83918bdffc0015ac852d04059a8c4d8fc2b1a268c0cc80d690e85899a7e/BingImageCreator-0.1.4.tar.gz", hash = "sha256:6a64f5ea569fb7bed047387a9540081f61dacd8b179ffbe423e4584b3fd2d8b7"},
+"bingimagecreator 0.4.2" = [
+    {url = "https://files.pythonhosted.org/packages/19/5d/e3811d19d3651bdae6a33670c83536f8891287c9b4582761c82e683ddd48/BingImageCreator-0.4.2-py3-none-any.whl", hash = "sha256:31e7982f0e3b80b88c11b68c95e52a20d2c389bec135be7fbffb67e23c91336d"},
+    {url = "https://files.pythonhosted.org/packages/f1/13/5b82c0168c40b4644ec048bdb40c9a440073088fb2279098a61986ad3e78/BingImageCreator-0.4.2.tar.gz", hash = "sha256:661208be8b432311094a54f9d5c62d67ac578515fe3c4ba781205e507051835f"},
 ]
 "black 23.3.0" = [
     {url = "https://files.pythonhosted.org/packages/06/1e/273d610249f0335afb1ddb03664a03223f4826e3d1a95170a0142cb19fb4/black-23.3.0-cp39-cp39-win_amd64.whl", hash = "sha256:6b39abdfb402002b8a7d030ccc85cf5afff64ee90fa4c5aebc531e3ad0175ddb"},
@@ -1265,9 +1270,9 @@ content_hash = "sha256:012ebfae9b7f7735694a5e552be003bbb0d56820ab8c5f140973c68a1
     {url = "https://files.pythonhosted.org/packages/58/07/815476ae605bcc5f95c87a62b95e74a1bce0878bc7a3119bc2bf4178f175/distlib-0.3.6.tar.gz", hash = "sha256:14bad2d9b04d3a36127ac97f30b12a19268f211063d8f8ee4f47108896e11b46"},
     {url = "https://files.pythonhosted.org/packages/76/cb/6bbd2b10170ed991cf64e8c8b85e01f2fb38f95d1bc77617569e0b0b26ac/distlib-0.3.6-py2.py3-none-any.whl", hash = "sha256:f35c4b692542ca110de7ef0bea44d73981caeb34ca0b9b6b2e6d7790dda8f80e"},
 ]
-"edgegpt 0.3.4.2" = [
-    {url = "https://files.pythonhosted.org/packages/1d/af/13bdbfddeafaab1a2307ffa4c72cee8632e8f056e968a72c94834f3b2a17/EdgeGPT-0.3.4.2.tar.gz", hash = "sha256:2e1c975612b49bbfcf771d629de00911667872a5544daac7fe98187fd46e727b"},
-    {url = "https://files.pythonhosted.org/packages/b2/82/252e5e0682f3828454f5b60285cf348d3045458f734ba7fc1013d2871d1e/EdgeGPT-0.3.4.2-py3-none-any.whl", hash = "sha256:e97302f4321d3fecb439e60402116f74f2f1ec4ef8f52af24840b3dfb172b542"},
+"edgegpt 0.11.1" = [
+    {url = "https://files.pythonhosted.org/packages/46/14/c72666b54c18044305097d3bc07dcef0db3c0228dd48ae48c3d8897afb38/EdgeGPT-0.11.1.tar.gz", hash = "sha256:43f85c92b1d224e18db5c55e23da768c4e95bcb116f3ae12a2b37a15081badce"},
+    {url = "https://files.pythonhosted.org/packages/f2/61/70f04389681af274dad66f2c4b704a0cf471f7eefd1d8e7a03b0e8fb4cd6/EdgeGPT-0.11.1-py3-none-any.whl", hash = "sha256:bcdd8da94ecc5559543cf05b6651571fbc367f3144db086367680e4326bcdf09"},
 ]
 "exceptiongroup 1.1.0" = [
     {url = "https://files.pythonhosted.org/packages/15/ab/dd27fb742b19a9d020338deb9ab9a28796524081bca880ac33c172c9a8f6/exceptiongroup-1.1.0.tar.gz", hash = "sha256:bcb67d800a4497e1b404c2dd44fca47d3b7a5e5433dbab67f96c1a685cdfdf23"},
@@ -1377,9 +1382,9 @@ content_hash = "sha256:012ebfae9b7f7735694a5e552be003bbb0d56820ab8c5f140973c68a1
     {url = "https://files.pythonhosted.org/packages/04/7e/ef97af4623024e8159993b3114ce208de4f677098ae058ec5882a1bf7605/httpcore-0.16.3-py3-none-any.whl", hash = "sha256:da1fb708784a938aa084bde4feb8317056c55037247c787bd7e19eb2c2949dc0"},
     {url = "https://files.pythonhosted.org/packages/61/42/5c456b02816845d163fab0f32936b6a5b649f3f915beff6f819f4f6c90b2/httpcore-0.16.3.tar.gz", hash = "sha256:c5d6f04e2fc530f39e0c077e6a30caa53f1451096120f1f38b954afd0b17c0cb"},
 ]
-"httpx 0.23.3" = [
-    {url = "https://files.pythonhosted.org/packages/ac/a2/0260c0f5d73bdf06e8d3fc1013a82b9f0633dc21750c9e3f3cb1dba7bb8c/httpx-0.23.3-py3-none-any.whl", hash = "sha256:a211fcce9b1254ea24f0cd6af9869b3d29aba40154e947d2a07bb499b3e310d6"},
-    {url = "https://files.pythonhosted.org/packages/f5/50/04d5e8ee398a10c767a341a25f59ff8711ae3adf0143c7f8b45fc560d72d/httpx-0.23.3.tar.gz", hash = "sha256:9818458eb565bb54898ccb9b8b251a28785dd4a55afbc23d0eb410754fe7d0f9"},
+"httpx 0.24.1" = [
+    {url = "https://files.pythonhosted.org/packages/ec/91/e41f64f03d2a13aee7e8c819d82ee3aa7cdc484d18c0ae859742597d5aa0/httpx-0.24.1-py3-none-any.whl", hash = "sha256:06781eb9ac53cde990577af654bd990a4949de37a28bdb4a230d434f3a30b9bd"},
+    {url = "https://files.pythonhosted.org/packages/f8/2a/114d454cb77657dbf6a293e69390b96318930ace9cd96b51b99682493276/httpx-0.24.1.tar.gz", hash = "sha256:5853a43053df830c20f8110c5e69fe44d035d850b2dfe795e196f00fdb774bdd"},
 ]
 "idna 3.4" = [
     {url = "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
@@ -1887,10 +1892,6 @@ content_hash = "sha256:012ebfae9b7f7735694a5e552be003bbb0d56820ab8c5f140973c68a1
     {url = "https://files.pythonhosted.org/packages/ce/10/f699366ce577423cbc3df3280063099054c23df70856465080798c6ebad6/resolvelib-1.0.1.tar.gz", hash = "sha256:04ce76cbd63fded2078ce224785da6ecd42b9564b1390793f64ddecbe997b309"},
     {url = "https://files.pythonhosted.org/packages/d2/fc/e9ccf0521607bcd244aa0b3fbd574f71b65e9ce6a112c83af988bbbe2e23/resolvelib-1.0.1-py2.py3-none-any.whl", hash = "sha256:d2da45d1a8dfee81bdd591647783e340ef3bcb104b54c383f70d422ef5cc7dbf"},
 ]
-"rfc3986 1.5.0" = [
-    {url = "https://files.pythonhosted.org/packages/79/30/5b1b6c28c105629cc12b33bdcbb0b11b5bb1880c6cfbd955f9e792921aa8/rfc3986-1.5.0.tar.gz", hash = "sha256:270aaf10d87d0d4e095063c65bf3ddbc6ee3d0b226328ce21e036f946e421835"},
-    {url = "https://files.pythonhosted.org/packages/c4/e5/63ca2c4edf4e00657584608bee1001302bbf8c5f569340b78304f2f446cb/rfc3986-1.5.0-py2.py3-none-any.whl", hash = "sha256:a86d6e1f5b1dc238b218b012df0aa79409667bb209e58da56d0b94704e712a97"},
-]
 "rich 13.3.5" = [
     {url = "https://files.pythonhosted.org/packages/39/03/6de23bdd88f5ee7f8b03f94f6e88108f5d7ffe6d207e95cdb06d9aa4cd57/rich-13.3.5-py3-none-any.whl", hash = "sha256:69cdf53799e63f38b95b9bf9c875f8c90e78dd62b2f00c13a911c7a3b9fa4704"},
     {url = "https://files.pythonhosted.org/packages/3d/0b/8dd34d20929c4b5e474db2e64426175469c2b7fea5ba71c6d4b3397a9729/rich-13.3.5.tar.gz", hash = "sha256:2d11b9b8dd03868f09b4fffadc84a6a8cda574e40dc90821bd845720ebb8e89c"},
@@ -1910,6 +1911,10 @@ content_hash = "sha256:012ebfae9b7f7735694a5e552be003bbb0d56820ab8c5f140973c68a1
 "sniffio 1.3.0" = [
     {url = "https://files.pythonhosted.org/packages/c3/a0/5dba8ed157b0136607c7f2151db695885606968d1fae123dc3391e0cfdbf/sniffio-1.3.0-py3-none-any.whl", hash = "sha256:eecefdce1e5bbfb7ad2eeaabf7c1eeb404d7757c379bd1f7e5cce9d8bf425384"},
     {url = "https://files.pythonhosted.org/packages/cd/50/d49c388cae4ec10e8109b1b833fd265511840706808576df3ada99ecb0ac/sniffio-1.3.0.tar.gz", hash = "sha256:e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101"},
+]
+"socksio 1.0.0" = [
+    {url = "https://files.pythonhosted.org/packages/37/c3/6eeb6034408dac0fa653d126c9204ade96b819c936e136c5e8a6897eee9c/socksio-1.0.0-py3-none-any.whl", hash = "sha256:95dc1f15f9b34e8d7b16f06d74b8ccf48f609af32ab33c608d08761c5dcbb1f3"},
+    {url = "https://files.pythonhosted.org/packages/f8/5c/48a7d9495be3d1c651198fd99dbb6ce190e2274d0f28b9051307bdec6b85/socksio-1.0.0.tar.gz", hash = "sha256:f88beb3da5b5c38b9890469de67d0cb0f9d494b78b106ca1845f96c10b91c4ac"},
 ]
 "tiktoken 0.3.3" = [
     {url = "https://files.pythonhosted.org/packages/05/bd/1e526343777747091527a5c2a4620c0fc8624dd7491d0a004e4600da1773/tiktoken-0.3.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:984758ebc07cd8c557345697c234f1f221bd730b388f4340dd08dffa50213a01"},

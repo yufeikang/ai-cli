@@ -9,7 +9,7 @@ from typing import Generator, Union
 from uuid import uuid4
 
 import openai
-from EdgeGPT import Chatbot, ConversationStyle
+from EdgeGPT.EdgeGPT import Chatbot, ConversationStyle
 
 from ai_cli.bot.token import get_token_count
 from ai_cli.setting import Setting
