@@ -208,6 +208,14 @@ commit_parser.add_argument(
     nargs="?",
     help="the extra message to add to the commit message",
 )
+commit_parser.add_argument(
+    "--user-prompt",
+    "-up",
+    dest="user_prompt",
+    type=str,
+    nargs="?",
+    help="enable user prompt mode, this will let you input the commit message",
+)
 
 args = parser.parse_args()
 
@@ -408,7 +416,10 @@ def commit_cmd():
         exit(0)
     console.print(f"[bold blue]Found {len(diff_files)} files changed[/bold blue]")
     diff = git.get_file_diff(diff_files, "HEAD")
-    message = f"{setting.commit_prompt.get_value()} \n\n {diff}"
+    prompt = setting.commit_prompt.get_value()
+    if args.user_prompt:
+        prompt = f"{prompt} \n\n user ask:{args.user_prompt} \n\n"
+    message = f"{prompt} \n\n {diff}"
     result = ask(message, stream=False).strip()
     if args.message:
         result = result + "\n\n" + args.message
