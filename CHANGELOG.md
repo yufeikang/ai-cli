@@ -1,3 +1,9 @@
+Release v0.3.5
+---------------------------
+
+- fix: EdgeGPT bot error
+- `commit` command add user-prompt option
+
 Release v0.3.4
 ---------------------------
 
