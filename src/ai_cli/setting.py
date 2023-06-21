@@ -1,10 +1,13 @@
 import json
+import logging
 from pathlib import Path
 
 from rich.console import Console
 from rich.table import Table
 
 from ai_cli import CONFIG_DIR
+
+logger = logging.getLogger("ai_cli")
 
 console = Console()
 
@@ -98,12 +101,19 @@ def read_setting() -> Setting:
     return Setting()
 
 
+def save_setting(setting: Setting):
+    with setting_file.open("w") as f:
+        json.dump(setting.__dict__(), f, ensure_ascii=False, indent=2)
+
+
 setting: Setting = Setting()
 
 
 if not setting_file.exists():
     setting_file.touch()
-    json.dump(dict(setting), setting_file.open("w"), ensure_ascii=False, indent=2)
+    # save default setting
+    logger.info("Save default setting, to %s", setting_file)
+    save_setting(setting)
 else:
     setting = read_setting()
 
@@ -122,11 +132,6 @@ def view_setting():
     for k, v in setting:
         table.add_row(k, v.name, str(v.get_value()), v.description)
     console.print(table)
-
-
-def save_setting(setting: Setting):
-    with setting_file.open("w") as f:
-        json.dump(setting.__dict__(), f, ensure_ascii=False, indent=2)
 
 
 def set_setting(k, v):
