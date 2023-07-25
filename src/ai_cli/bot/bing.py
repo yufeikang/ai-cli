@@ -10,13 +10,15 @@ from ai_cli.setting import Setting
 
 logger = logging.getLogger(__name__)
 
+with open(Setting.bing_cookie.get_value(), 'r') as f:
+    bing_cookies = json.load(f)
 
 class BingBot(Bot):
     def __init__(self, setting: Setting):
         super().__init__(setting)
         self.style = ConversationStyle.creative
         self.history.answer_append = False
-        self.bot = Chatbot(cookiePath=setting.bing_cookie.get_value())
+        self.bot = Chatbot(cookies=bing_cookies)
         logger.info(f"BingBot init, cookie path: {setting.bing_cookie.get_value()}")
         self.max_conversation = None
         self.current_conversation = 0
@@ -42,7 +44,7 @@ class BingBot(Bot):
         # reset conversation
         summary = list(self._ask("", stream=False))[0]
         logger.info(f"Summarize: {summary}")
-        self.bot = Chatbot(cookiePath=self.setting.bing_cookie.get_value())
+        self.bot = Chatbot(cookies=bing_cookies)
         self.prefix_prompt = summary
 
     def _get_question(self, question: str) -> str:
