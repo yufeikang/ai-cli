@@ -7,6 +7,7 @@ from typing import Generator, Union
 from uuid import uuid4
 
 import openai
+from litellm import completion
 
 from ai_cli.bot.token import get_token_count
 from ai_cli.setting import Setting
@@ -145,7 +146,7 @@ class GPTBot(Bot):
         messages = list(self.get_messages())
         logger.debug(f"Messages: {messages}, model: {self.model}, stream: {stream}")
         try:
-            response = openai.ChatCompletion.create(model=self.model, messages=messages, stream=stream)
+            response = completion(model=self.model, messages=messages, stream=stream)
             if not stream:
                 yield response.choices[0].message.content
             else:
