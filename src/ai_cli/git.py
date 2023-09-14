@@ -1,9 +1,10 @@
 import logging
 import os
+import re
 import shlex
 import subprocess
 import sys
-from typing import Callable, Collection, Optional, Tuple, Union
+from typing import Collection, Tuple, Union
 
 logger = logging.getLogger(__name__)
 
@@ -127,7 +128,7 @@ def get_file_diff(path, target):
             _path = os.path.join(git_root, _path).split(current + "/")[1]
         return _path
 
-    cmd = ["git", "--no-pager", "diff", "--cached", "--", target]
+    cmd = ["git", "--no-pager", "diff", "--cached", target]
     _path = _join_path(path)
     if _path:
         cmd.extend([_path] if isinstance(_path, str) else _path)
@@ -135,7 +136,10 @@ def get_file_diff(path, target):
     if res != 0:
         logging.error("git command failed, cmd: {}".format(cmd))
         return None
-    return output.decode("utf-8").strip()
+    content = output.decode("utf-8").strip()
+    if _is_subproject_changes(content):
+        content = _get_subproject_changes(target, path)
+    return content
 
 
 def commit(message):
@@ -158,3 +162,33 @@ if __name__ == "__main__":
     files = get_change_files(target)
     print(files)
     print(get_file_diff(files[0], target))
+
+
+def _is_subproject_changes(diff_content):
+    """Check if the diff is subproject changes.
+
+    Args:
+        diff_content (str): The diff content.
+
+    Returns:
+        bool: True if the diff is subproject changes, False otherwise.
+    """
+    return bool(re.search(r"^-Subproject commit", diff_content, re.MULTILINE))
+
+
+def _get_subproject_changes(target, subproject):
+    """Get the subproject changes.
+
+    Args:
+        target (str): The target to compare with.
+        subproject (str): The subproject name.
+
+    Returns:
+        list: The list of subproject changes.
+    """
+    cmd = ["git", "--no-pager", "diff", "--cached", target, "--submodule=diff", "--", subproject]
+    res, output = _run_command(cmd)
+    if res != 0:
+        logging.error("git command failed, cmd: {}".format(cmd))
+        return None
+    return output.decode("utf-8").strip()
