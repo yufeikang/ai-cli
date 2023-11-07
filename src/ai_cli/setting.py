@@ -46,7 +46,7 @@ class Setting:
     endpoint = SettingField("OpenAI API Endpoint", description="default is https://api.openai.com")
     model = SettingField("OpenAI API Model", default="gpt-3.5-turbo")
     no_stream = SettingField("Disable stream mode", default=False, type=bool)
-    bot = SettingField("Bot Type", default="GPTBot", description="Supported: GPTBot, BingBot")
+    bot = SettingField("Bot Type", default="GPTBot", description="Supported: GPTBot, BingBot, BardBot")
     raw = SettingField("Raw mode", default=False, type=bool, description="no render content by rich")
     log_level = SettingField("Log level", default="INFO")
     debug = SettingField("Debug mode", default=False, type=bool)

@@ -15,6 +15,7 @@ dependencies = [
     "pyperclip>=1.8.2",
     "EdgeGPT>=0.1.22.1",
     "tiktoken>=0.3.3",
+    "BardApi>=0.1.38"
 ]
 requires-python = ">=3.8"
 readme = "README.md"
