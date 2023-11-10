@@ -157,7 +157,6 @@ class GPTBot(Bot):
             time.sleep(10)
             return self._ask("", stream=stream)
 
-
 bot = None
 
 
@@ -166,8 +165,10 @@ def get_bot(setting: Setting, bot_type: str):
     if bot is None:
         if bot_type == "BingBot":
             from .bing import BingBot
-
             bot = BingBot(setting)
+        elif bot_type == "BardBot":
+            from .bard import BardBot
+            bot = BardBot(setting)
         else:
             bot = GPTBot(setting)
     return bot
