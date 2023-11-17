@@ -83,7 +83,7 @@ parser.add_argument(
     dest="bot",
     type=str,
     nargs="?",
-    choices=["GPTBot", "BingBot"],
+    choices=["GPTBot", "BingBot", "BardBot"],
     help="the bot to use, defaults to GPTBot",
 )
 parser.add_argument(

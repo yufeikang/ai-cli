@@ -19,6 +19,10 @@ Workers](https://github.com/noobnooc/noobnooc/discussions/9).
 
 You can set the `OPENAI_API_KEY` environment variable or specify it using the `--api-key` parameter. You can also set it using the `ai setting` command.
 
+* Bard Support
+
+If you use the Bard Bot, you must be logged into Google Bard on at least one browser, which will automatically be detected.
+
 * Bing Cookie
 
 If you use the Bing Bot, you need to set the Bing Cookie. You can set it using the `ai setting` command.
