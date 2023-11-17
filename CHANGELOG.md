@@ -1,3 +1,8 @@
+Release v0.3.8
+---------------------------
+
+- fix: upgrade tiktoken to support new model
+
 Release v0.3.5
 ---------------------------
 
