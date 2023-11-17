@@ -6,7 +6,7 @@ import subprocess
 import sys
 import tempfile
 
-from ai_cli import git, init_logging
+from ai_cli import compress_diff_content, git, init_logging
 from ai_cli.bot import Bot, get_bot
 from ai_cli.setting import set_setting, setting, view_setting
 
@@ -385,14 +385,22 @@ def review_cmd():
         console.print("[bold red]No diff files found")
         exit(0)
     for f in diff_files:
-        console.print(f"[bold blue]Reviewing file: {f}[/bold blue]")
         diff_context = git.get_file_diff(f, args.target)
+        diff_context = compress_diff_content(diff_context)
+        console.print(f"[bold blue]Reviewing file: {f} :[{len(diff_context)}w][/bold blue]")
         if not diff_context:
             console.print(f"[bold red]No diff found for file: {f}")
             continue
+        action = Prompt.ask(
+            "[bold blue]Press enter to start, press n to skip[/bold blue]",
+            choices=["y", "n"],
+            default="y",
+            show_choices=False,
+        )
+        if action == "n":
+            continue
         text = f"{diff_context} \n\n {setting.review_prompt.get_value()}"
         ask(text, stream=stream)
-        Prompt.ask("[bold blue]Press enter to continue[/bold blue]")
     console.print("[bold green]Done![/bold green]")
 
 
