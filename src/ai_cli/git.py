@@ -128,7 +128,7 @@ def get_file_diff(path, target):
             _path = os.path.join(git_root, _path).split(current + "/")[1]
         return _path
 
-    cmd = ["git", "--no-pager", "diff", "--cached", target]
+    cmd = ["git", "--no-pager", "diff", "--cached", "--", target]
     _path = _join_path(path)
     if _path:
         cmd.extend([_path] if isinstance(_path, str) else _path)
@@ -137,7 +137,7 @@ def get_file_diff(path, target):
         logging.error("git command failed, cmd: {}".format(cmd))
         return None
     content = output.decode("utf-8").strip()
-    if _is_subproject_changes(content):
+    if _is_subproject_changes(content) and isinstance(path, str):
         content = _get_subproject_changes(target, path)
     return content
 
@@ -186,6 +186,7 @@ def _get_subproject_changes(target, subproject):
     Returns:
         list: The list of subproject changes.
     """
+    logger.debug("Get subproject changes, target: {}, subproject: {}".format(target, subproject))
     cmd = ["git", "--no-pager", "diff", "--cached", target, "--submodule=diff", "--", subproject]
     res, output = _run_command(cmd)
     if res != 0:
