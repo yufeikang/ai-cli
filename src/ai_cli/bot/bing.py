@@ -10,11 +10,12 @@ from ai_cli.setting import Setting
 
 logger = logging.getLogger(__name__)
 
-with open(Setting.bing_cookie.get_value(), 'r') as f:
+with open(Setting.bing_cookie.get_value(), "r") as f:
     bing_cookies = json.load(f)
 
+
 class BingBot(Bot):
-    def __init__(self, setting: Setting):
+    def __init__(self, setting: Setting, *args, **kwargs):
         super().__init__(setting)
         self.style = ConversationStyle.creative
         self.history.answer_append = False

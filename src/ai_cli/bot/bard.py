@@ -8,13 +8,14 @@ from ai_cli.bot import Bot
 from ai_cli.setting import Setting
 
 from typing import Generator, Union
+
 logger = logging.getLogger(__name__)
 
 
 class HiddenPrints:
     def __enter__(self):
         self._original_stdout = sys.stdout
-        sys.stdout = open(os.devnull, 'w')
+        sys.stdout = open(os.devnull, "w")
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout.close()
@@ -22,7 +23,7 @@ class HiddenPrints:
 
 
 class BardBot(Bot):
-    def __init__(self, setting: Setting):
+    def __init__(self, setting: Setting, *args, **kwargs):
         super().__init__(setting)
 
         # bard-api will print the cookies to stdout and it can't be disabled otherwise

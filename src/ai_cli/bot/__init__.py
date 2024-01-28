@@ -1,10 +1,12 @@
 # abc bot interface
 import logging
+import os
 import time
 from abc import ABC, abstractmethod
 from collections import OrderedDict
 from typing import Generator, Union
 from uuid import uuid4
+import httpx
 
 import openai
 
@@ -112,10 +114,60 @@ class Bot(ABC):
 
 
 class GPTBot(Bot):
-    def __init__(self, setting: Setting):
+    def __init__(self, setting: Setting, args=None):
         super().__init__(setting)
+        self.init_env(setting, args=args)
         self.model = setting.model.get_value()
         self.max_tokens = setting.max_tokens.get_value()
+        init_kwargs = {
+            "api_key": self.api_key,
+            "base_url": self.api_base,
+        }
+        if self.proxy:
+            http_client = httpx.Client(
+                proxies=self.proxy,
+                transport=httpx.HTTPTransport(local_address="0.0.0.0"),
+            )
+            init_kwargs["http_client"] = http_client
+        self.client = openai.OpenAI(**init_kwargs)
+
+    def init_env(self, setting: Setting, args=None):
+        self.api_key = None
+        if args.api_key:
+            self.api_key = args.api_key
+        elif setting.api_key.get_value():
+            self.api_key = setting.api_key.get_value()
+        elif "OPENAI_API_KEY" in os.environ:
+            self.api_key = os.environ["OPENAI_API_KEY"]
+        self.api_base = "https://api.openai.com"
+        if args.endpoint:
+            self.api_base = args.endpoint
+        elif setting.endpoint.get_value():
+            self.api_base = setting.endpoint.get_value()
+        elif "OPENAI_API_BASE" in os.environ:
+            self.api_base = os.environ["OPENAI_API_BASE"]
+        logger.debug("using endpoint: %s", self.api_base)
+        self.proxy = None
+        if args.proxy:
+            self.proxy = args.proxy
+        elif setting.proxy.get_value():
+            self.proxy = setting.proxy.get_value()
+        elif "HTTP_PROXY" in os.environ:
+            self.proxy = os.environ["HTTP_PROXY"]
+        elif "HTTPS_PROXY" in os.environ:
+            self.proxy = os.environ["HTTPS_PROXY"]
+        elif "SOCKS_PROXY" in os.environ:
+            self.proxy = os.environ["SOCKS_PROXY"]
+        elif "ALL_PROXY" in os.environ:
+            self.proxy = os.environ["ALL_PROXY"]
+        if self.proxy:
+            if self.proxy.startswith("socks"):
+                logger.debug("using socks proxy: %s", self.proxy)
+                try:
+                    import socks
+                except ImportError:
+                    print("Please install pysocks: pip install pysocks")
+                    exit(1)
 
     def get_messages(self):
         for h in self.history:
@@ -145,30 +197,33 @@ class GPTBot(Bot):
         messages = list(self.get_messages())
         logger.debug(f"Messages: {messages}, model: {self.model}, stream: {stream}")
         try:
-            response = openai.ChatCompletion.create(model=self.model, messages=messages, stream=stream)
+            response = self.client.chat.completions.create(model=self.model, messages=messages, stream=stream)
             if not stream:
                 yield response.choices[0].message.content
             else:
                 for v in response:
-                    if "content" in v.choices[0].delta:
+                    if v.choices[0].delta.content:
                         yield v.choices[0].delta.content
-        except openai.error.RateLimitError:
+        except openai.RateLimitError:
             logger.warning("[bold red]Rate limit exceeded, sleep for 10 seconds, then retry")
             time.sleep(10)
             return self._ask("", stream=stream)
 
+
 bot = None
 
 
-def get_bot(setting: Setting, bot_type: str):
+def get_bot(setting: Setting, bot_type: str, args=None):
     global bot
     if bot is None:
         if bot_type == "BingBot":
             from .bing import BingBot
-            bot = BingBot(setting)
+
+            bot = BingBot(setting, args)
         elif bot_type == "BardBot":
             from .bard import BardBot
-            bot = BardBot(setting)
+
+            bot = BardBot(setting, args)
         else:
-            bot = GPTBot(setting)
+            bot = GPTBot(setting, args)
     return bot

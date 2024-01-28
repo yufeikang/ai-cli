@@ -12,8 +12,9 @@
             "args": [
                 "-d",
                 "ask",
+                "hello"
             ],
-            "justMyCode": true,
+            "justMyCode": false,
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/src"
             }

@@ -223,47 +223,6 @@ init_logging(setting.log_level.get_value() if not args.debug else "DEBUG")
 
 logger = logging.getLogger(__name__)
 
-if args.api_key:
-    openai.api_key = args.api_key
-elif setting.api_key.get_value():
-    openai.api_key = setting.api_key.get_value()
-elif "OPENAI_API_KEY" in os.environ:
-    openai.api_key = os.environ["OPENAI_API_KEY"]
-
-proxy = None
-if args.proxy:
-    proxy = args.proxy
-elif setting.proxy.get_value():
-    proxy = setting.proxy.get_value()
-elif "HTTP_PROXY" in os.environ:
-    proxy = os.environ["HTTP_PROXY"]
-elif "HTTPS_PROXY" in os.environ:
-    proxy = os.environ["HTTPS_PROXY"]
-elif "SOCKS_PROXY" in os.environ:
-    proxy = os.environ["SOCKS_PROXY"]
-elif "ALL_PROXY" in os.environ:
-    proxy = os.environ["ALL_PROXY"]
-
-
-if proxy:
-    openai.proxy = proxy
-    if proxy.startswith("socks"):
-        logger.debug("using socks proxy: %s", proxy)
-        try:
-            import socks
-        except ImportError:
-            print("Please install pysocks: pip install pysocks")
-            exit(1)
-
-if args.endpoint:
-    openai.api_base = args.endpoint
-elif setting.endpoint.get_value():
-    openai.api_base = setting.endpoint.get_value()
-elif "OPENAI_API_BASE" in os.environ:
-    openai.api_base = os.environ["OPENAI_API_BASE"]
-
-logger.debug("using endpoint: %s", openai.api_base)
-
 
 def _print(text, render):
     content = text
@@ -280,7 +239,7 @@ def _print(text, render):
 
 def _ask(question, stream=False):
     bot_type = args.bot or setting.bot.get_value()
-    bot: Bot = get_bot(setting=setting, bot_type=bot_type)
+    bot: Bot = get_bot(setting=setting, bot_type=bot_type, args=args)
     return bot.ask(question, stream=stream)
 
 
