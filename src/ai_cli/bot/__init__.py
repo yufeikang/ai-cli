@@ -123,13 +123,23 @@ class GPTBot(Bot):
             "api_key": self.api_key,
             "base_url": self.api_base,
         }
+        client_cls = openai.OpenAI
         if self.proxy:
             http_client = httpx.Client(
                 proxies=self.proxy,
                 transport=httpx.HTTPTransport(local_address="0.0.0.0"),
             )
             init_kwargs["http_client"] = http_client
-        self.client = openai.OpenAI(**init_kwargs)
+        if "azure" in self.api_base or "AZURE_OPENAI_ENDPOINT" in os.environ:
+            client_cls = openai.AzureOpenAI
+            logger.info("using azure api")
+            api_version = os.environ.get("AZURE_API_VERSION", "2023-07-01-preview")
+            init_kwargs["api_version"] = api_version
+            init_kwargs["azure_endpoint"] = os.environ.get("AZURE_OPENAI_ENDPOINT") or self.api_base
+            init_kwargs["azure_ad_token"] = os.environ.get("AZURE_OPENAI_AD_TOKEN") or self.api_key
+            init_kwargs["azure_deployment"] = os.environ.get("AZURE_OPENAI_DEPLOYMENT")
+
+        self.client = client_cls(**init_kwargs)
 
     def init_env(self, setting: Setting, args=None):
         self.api_key = None

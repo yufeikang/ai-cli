@@ -84,7 +84,7 @@ parser.add_argument(
     type=str,
     nargs="?",
     choices=["GPTBot", "BingBot", "BardBot"],
-    help="the bot to use, defaults to GPTBot",
+    help="the bot to use, defaults to GPTBot, if you want to use Azure openai, you need to set AZURE_OPENAI_ENDPOINT env var",
 )
 parser.add_argument(
     "--debug",
