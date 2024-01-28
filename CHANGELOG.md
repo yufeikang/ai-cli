@@ -1,3 +1,9 @@
+Release v0.4.0
+---------------------------
+
+- fix: upgrade openai sdk
+- feat: support azure openai
+
 Release v0.3.8
 ---------------------------
 

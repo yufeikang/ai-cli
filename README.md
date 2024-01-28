@@ -19,6 +19,8 @@ Workers](https://github.com/noobnooc/noobnooc/discussions/9).
 
 You can set the `OPENAI_API_KEY` environment variable or specify it using the `--api-key` parameter. You can also set it using the `ai setting` command.
 
+If you use Azure OpenAI, you can set the `AZURE_OPENAI_API_KEY` or `AZURE_OPENAI_AD_TOKEN` environment variable. and `AZURE_OPENAI_ENDPOINT` for Azure OpenAI endpoint.
+
 * Bard Support
 
 If you use the Bard Bot, you must be logged into Google Bard on at least one browser, which will automatically be detected.
