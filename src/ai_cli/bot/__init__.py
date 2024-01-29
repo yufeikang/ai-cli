@@ -6,8 +6,8 @@ from abc import ABC, abstractmethod
 from collections import OrderedDict
 from typing import Generator, Union
 from uuid import uuid4
-import httpx
 
+import httpx
 import openai
 
 from ai_cli.bot.token import get_token_count
@@ -149,7 +149,7 @@ class GPTBot(Bot):
             self.api_key = setting.api_key.get_value()
         elif "OPENAI_API_KEY" in os.environ:
             self.api_key = os.environ["OPENAI_API_KEY"]
-        self.api_base = "https://api.openai.com"
+        self.api_base = "https://api.openai.com/v1"
         if args.endpoint:
             self.api_base = args.endpoint
         elif setting.endpoint.get_value():

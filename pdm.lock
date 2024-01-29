@@ -4,8 +4,8 @@
 [metadata]
 groups = ["default", "dev", "doc", "test", "tox", "workflow"]
 strategy = ["cross_platform"]
-lock_version = "4.4.1"
-content_hash = "sha256:2245f150fc15eba7d40e5da9ecaa8afcd3b466f8b323a84a1ade5b30d23b0dd0"
+lock_version = "4.4"
+content_hash = "sha256:059903c28bab7a3780c669d50fefbf76d814b3432133bd4fbecbce94508dc293"
 
 [[package]]
 name = "aiohttp"
@@ -254,7 +254,7 @@ name = "browser-cookie3"
 version = "0.19.1"
 summary = "Loads cookies from your browser into a cookiejar object so can download with urllib and other libraries the same content you see in the web browser."
 dependencies = [
-    "jeepney; \"bsd\" in sys_platform and python_version >= \"3.7\" or sys_platform == \"linux\" and python_version >= \"3.7\"",
+    "jeepney; python_version >= \"3.7\" and (\"bsd\" in sys_platform or sys_platform == \"linux\")",
     "lz4",
     "pycryptodomex",
 ]
@@ -271,6 +271,10 @@ summary = "httplib2 caching for requests"
 dependencies = [
     "msgpack>=0.5.2",
     "requests",
+]
+files = [
+    {file = "CacheControl-0.12.11-py2.py3-none-any.whl", hash = "sha256:2c75d6a8938cb1933c75c50184549ad42728a27e9f6b92fd677c3151aa72555b"},
+    {file = "CacheControl-0.12.11.tar.gz", hash = "sha256:a5b9fcc986b184db101aa280b42ecdcdfc524892596f606858e0b7a8b4d9e144"},
 ]
 
 [[package]]

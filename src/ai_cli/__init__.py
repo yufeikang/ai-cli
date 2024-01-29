@@ -1,9 +1,9 @@
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 
 import logging
+import re
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
-import re
 
 HOME = Path.home()
 

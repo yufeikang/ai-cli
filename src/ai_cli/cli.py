@@ -385,8 +385,8 @@ def commit_cmd():
     diff = git.get_file_diff(diff_files, "HEAD")
     prompt = setting.commit_prompt.get_value()
     if args.user_prompt:
-        prompt = f"{prompt} \n\n user ask:{args.user_prompt} \n\n"
-    message = f"{prompt} \n\n {diff}"
+        prompt = f"{prompt}\n\nuser request:{args.user_prompt}\n\n"
+    message = f"{prompt}\n\ngot code diff:\n{diff}"
     result = ask(message, stream=False).strip()
     if args.message:
         result = result + "\n\n" + args.message

@@ -10,12 +10,12 @@ authors = [
 ]
 dependencies = [
     "rich>=13.3.1",
-    "openai>=0.27.0",
+    "openai>=1.10.0",
     "pysocks>=1.7.1",
     "pyperclip>=1.8.2",
     "EdgeGPT>=0.1.22.1",
     "tiktoken>=0.5.1",
-    "BardApi>=0.1.38"
+    "BardApi>=0.1.38",
 ]
 requires-python = ">=3.8"
 readme = "README.md"
