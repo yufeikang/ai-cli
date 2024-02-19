@@ -19,6 +19,12 @@ Workers搭建OpenAI API代理](https://github.com/noobnooc/noobnooc/discussions/
 
 環境変数 `OPENAI_API_KEY` または `--api-key` パラメーターを使用して指定するか、`ai setting`命令を使用して指定できます。
 
+Azure OpenAIを使用する場合は、 `AZURE_OPENAI_API_KEY` または `AZURE_OPENAI_AD_TOKEN` 環境変数を設定し、Azure OpenAIエンドポイントの `AZURE_OPENAI_ENDPOINT` を設定します。
+
+* Gemini Pro
+
+Geminiを使用する場合は、 `GOOGLE_API_KEY` または `--google-api-key` パラメーターを設定できます。`ai setting`命令を使用して設定できます。現在、 `gemini-pro` モードのみをサポートしています。`ai setting --edit mode=gemini-pro` または `ai --mode gemini-pro` で設定できます。
+
 * Bing Cookie
 
 Bing Botを使用する場合は、Bing Cookieを設定する必要があります。`ai setting`命令を使用して設定できます。

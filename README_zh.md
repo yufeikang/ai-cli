@@ -17,6 +17,11 @@
 
 可以设定环境变量`OPENAI_API_KEY`，也可以通过`--api-key`参数指定。也可通过`ai setting`命令来设置。
 
+* Gemini Pro
+
+如果使用Gemini，可以设置`GOOGLE_API_KEY`或者`--google-api-key`参数。当使用gemini，请设置model为`gemini-pro`。可以通过`ai setting --edit mode=gemini-pro`来设置。或者`ai --mode gemini-pro`。
+和设置bot为`GeminiBot`。通过`ai setting --edit bot=GeminiBot`来设置。或者`ai --bot GeminiBot`。
+
 * Bing Cookie
 
 如果使用Bing Bot需要设置Bing Cookie。可以通过`ai setting`命令来设置。

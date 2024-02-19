@@ -1,3 +1,8 @@
+Release v0.5.0
+---------------------------
+
+- feat: now support Google Gemini Model. You can use `ai setting --edit bot=GeminiBot` to switch to it
+
 Release v0.4.0
 ---------------------------
 

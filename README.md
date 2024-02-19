@@ -21,7 +21,12 @@ You can set the `OPENAI_API_KEY` environment variable or specify it using the `-
 
 If you use Azure OpenAI, you can set the `AZURE_OPENAI_API_KEY` or `AZURE_OPENAI_AD_TOKEN` environment variable. and `AZURE_OPENAI_ENDPOINT` for Azure OpenAI endpoint.
 
-* Bard Support
+* Gemini Pro
+
+If you use the Gemini, you can set the `GOOGLE_API_KEY` or `--google-api-key` parameter. You can also set it using the `ai setting` command. Need to set bot to `GeminiBot` by `ai setting --edit bot=GeminiBot`.
+Now, support `gemini-pro` mode only. You can set by `ai setting --edit mode=gemini-pro`, or `ai --mode gemini-pro`.
+
+* Bard Support [Deprecated]
 
 If you use the Bard Bot, you must be logged into Google Bard on at least one browser, which will automatically be detected.
 
