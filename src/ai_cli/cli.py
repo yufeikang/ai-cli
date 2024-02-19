@@ -64,7 +64,6 @@ parser.add_argument(
     dest="model",
     type=str,
     nargs="?",
-    default="gpt-3.5-turbo",
     help="the model to use",
 )
 parser.add_argument(
@@ -83,7 +82,7 @@ parser.add_argument(
     dest="bot",
     type=str,
     nargs="?",
-    choices=["GPTBot", "BingBot", "BardBot"],
+    choices=["GPTBot", "BingBot", "BardBot", "GeminiBot"],
     help="the bot to use, defaults to GPTBot, if you want to use Azure openai, you need to set AZURE_OPENAI_ENDPOINT env var",
 )
 parser.add_argument(

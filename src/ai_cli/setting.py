@@ -43,10 +43,17 @@ class Setting:
     api_key = SettingField(
         "OpenAI API Key", description="You can get it from https://platform.openai.com/account/api-keys"
     )
+    google_api_key = SettingField(
+        "Google API Key", description="You can get it from https://aistudio.google.com/app/apikey"
+    )
     endpoint = SettingField("OpenAI API Endpoint", description="default is https://api.openai.com")
-    model = SettingField("OpenAI API Model", default="gpt-3.5-turbo")
+    model = SettingField(
+        "Model",
+        default="gpt-4-turbo-preview",
+        description="default is openai model, if you use other LLM, please change it",
+    )
     no_stream = SettingField("Disable stream mode", default=False, type=bool)
-    bot = SettingField("Bot Type", default="GPTBot", description="Supported: GPTBot, BingBot, BardBot")
+    bot = SettingField("Bot Type", default="GPTBot", description="Supported: GPTBot, BingBot, BardBot, GeminiBot")
     raw = SettingField("Raw mode", default=False, type=bool, description="no render content by rich")
     log_level = SettingField("Log level", default="INFO")
     debug = SettingField("Debug mode", default=False, type=bool)
@@ -54,6 +61,7 @@ class Setting:
     multi_line_input = SettingField("Multi line input", default=False, type=bool)
     bing_cookie = SettingField("Bing cookie", default=None)
     max_tokens = SettingField("Max tokens", default=4096, type=int)
+    temperature = SettingField("Temperature", default=0.7, type=float)
     review_prompt = SettingField(
         "Review prompt", default="Please review the above code diff, looking for bugs and potential improvements."
     )

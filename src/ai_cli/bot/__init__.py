@@ -234,6 +234,10 @@ def get_bot(setting: Setting, bot_type: str, args=None):
             from .bard import BardBot
 
             bot = BardBot(setting, args)
+        elif bot_type == "GeminiBot":
+            from .gemini import GeminiBot
+
+            bot = GeminiBot(setting, args)
         else:
             bot = GPTBot(setting, args)
     return bot
