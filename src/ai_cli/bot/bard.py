@@ -22,9 +22,14 @@ class HiddenPrints:
         sys.stdout = self._original_stdout
 
 
+# @deprecated
+# bardapi is unofficial package, and now google provides official gemini api
+# place use gemini instead of bardapi
 class BardBot(Bot):
     def __init__(self, setting: Setting, *args, **kwargs):
         super().__init__(setting)
+
+        logger.warning("BardBot is deprecated, please use GeminiBot instead.")
 
         # bard-api will print the cookies to stdout and it can't be disabled otherwise
         with HiddenPrints():
