@@ -124,7 +124,7 @@ class GPTBot(Bot):
     def __init__(self, setting: Setting, args=None, **kwargs):
         super().__init__(setting, **kwargs)
         self.init_env(setting, args=args)
-        self.model = setting.model.get_value()
+        self.model = args.model or setting.model.get_value()
         self.max_tokens = setting.max_tokens.get_value()
         init_kwargs = {
             "api_key": self.api_key,
