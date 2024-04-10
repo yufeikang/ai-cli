@@ -16,14 +16,14 @@ class GeminiBot(Bot):
         logger.info(f"Init GeminiBot with setting: {setting}")
         api_key = setting.google_api_key.get_value() or os.environ.get("GOOGLE_API_KEY")
         genai.configure(api_key=api_key)
-        self.model = args.model or setting.model.get_value() or "gemini-pro"
+        self.model = args.model or setting.model.get_value() or "gemini-1.5-pro-latest"
         if self.model not in self.available_models:
             raise ValueError(f"Model {self.model} is not supported. Supported models: {self.available_models}")
         self.bot: GenerativeModel = genai.GenerativeModel(model_name=self.model)
 
     @property
     def available_models(self):
-        return ["gemini-1.0-pro", "gemini-pro"]
+        return ["gemini-1.5-pro-latest", "gemini-1.0-pro", "gemini-pro"]
 
     def get_messages(self):
         for m in self.history:
