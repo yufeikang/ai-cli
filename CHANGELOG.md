@@ -1,3 +1,8 @@
+Release v0.5.2
+---------------------------
+
+- feat: support Gemini 1.5 pro, use `gemini-1.5-pro-latest` to switch to it
+
 Release v0.5.0
 ---------------------------
 
