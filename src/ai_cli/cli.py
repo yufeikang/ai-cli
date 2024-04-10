@@ -236,23 +236,24 @@ def _print(text, render):
     render(markdown)
 
 
-def _ask(question, stream=False):
+def _ask(question, stream=False, prompt=None):
     bot_type = args.bot or setting.bot.get_value()
     bot: Bot = get_bot(setting=setting, bot_type=bot_type, args=args)
+    bot.prompt = prompt
     return bot.ask(question, stream=stream)
 
 
-def ask(question, stream=False):
+def ask(question, stream=False, prompt=None):
     content = ""
     if stream:
         with Live("[bold green]Asking...", refresh_per_second=3) as live:
             logger.debug("asking question: %s", question)
-            response = _ask(question, stream=stream)
+            response = _ask(question, stream=stream, prompt=prompt)
             for content in response:
                 _print(content, live.update)
     else:
         with console.status("[bold green]Asking...", spinner="point") as status:
-            content = _ask(question, stream=stream)
+            content = _ask(question, stream=stream, prompt=prompt)
             _print(content, console.print)
             status.update("[bold green]Done!")
     return content
@@ -385,8 +386,7 @@ def commit_cmd():
     prompt = setting.commit_prompt.get_value()
     if args.user_prompt:
         prompt = f"{prompt}\n\nuser request:{args.user_prompt}\n\n"
-    message = f"{prompt}\n\ngot code diff:\n{diff}"
-    result = ask(message, stream=False).strip()
+    result = ask(f"got code diff:\n{diff}", stream=False, prompt=prompt).strip()
     if args.message:
         result = result + "\n\n" + args.message
     action = Prompt.ask(

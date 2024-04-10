@@ -16,6 +16,12 @@ from ai_cli.setting import Setting
 logger = logging.getLogger(__name__)
 
 
+def truncate_string(s: str, max_len: int = 1000) -> str:
+    if len(s) > max_len:
+        return s[:max_len] + "..."
+    return s
+
+
 class ChatHistory:
     def __init__(self, question: str, answer: str, q_id: str, answer_append: bool = True):
         self.question = question
@@ -81,13 +87,14 @@ class ChatHistoryContainer:
 
 
 class Bot(ABC):
-    def __init__(self, setting: Setting):
+    def __init__(self, setting: Setting, prompt=None, **kwargs):
         self.setting = setting
         self.history = ChatHistoryContainer()
         self.stream = not setting.no_stream.get_value()
+        self.prompt = prompt
 
     @abstractmethod
-    def _ask(self, question: str, stream=None) -> Union[str, Generator]:
+    def _ask(self, question: str, stream=None) -> Generator:
         pass
 
     def should_summarize(self) -> bool:
@@ -98,7 +105,7 @@ class Bot(ABC):
 
     def ask(self, question: str, stream=None) -> Union[str, Generator]:
         stream = self.stream if stream is None else stream
-        logger.info(f"Ask: {question} stream: {stream}")
+        logger.info(f"Ask: {truncate_string(question)} stream: {stream}")
         if self.should_summarize():
             self.summarize()
         question_id = self.history.add_question(question)
@@ -114,10 +121,10 @@ class Bot(ABC):
 
 
 class GPTBot(Bot):
-    def __init__(self, setting: Setting, args=None):
-        super().__init__(setting)
+    def __init__(self, setting: Setting, args=None, **kwargs):
+        super().__init__(setting, **kwargs)
         self.init_env(setting, args=args)
-        self.model = setting.model.get_value()
+        self.model = args.model or setting.model.get_value()
         self.max_tokens = setting.max_tokens.get_value()
         init_kwargs = {
             "api_key": self.api_key,
@@ -180,6 +187,8 @@ class GPTBot(Bot):
                     exit(1)
 
     def get_messages(self):
+        if self.prompt:
+            yield {"role": "system", "content": self.prompt}
         for h in self.history:
             yield {"role": "user", "content": h.question}
             if h.answer is not None:
@@ -203,7 +212,7 @@ class GPTBot(Bot):
         q_id = self.history.add_question("TLDR")
         self.history.add_answer(q_id, content)
 
-    def _ask(self, question: str, stream=None) -> Union[str, Generator]:
+    def _ask(self, question: str, stream=None) -> Generator:
         messages = list(self.get_messages())
         logger.debug(f"Messages: {messages}, model: {self.model}, stream: {stream}")
         try:
