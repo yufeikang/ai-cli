@@ -49,7 +49,7 @@ class Setting:
     endpoint = SettingField("OpenAI API Endpoint", description="default is https://api.openai.com")
     model = SettingField(
         "Model",
-        default="gpt-4-turbo-preview",
+        default="gpt-4o",
         description="default is openai model, if you use other LLM, please change it",
     )
     no_stream = SettingField("Disable stream mode", default=False, type=bool)
