@@ -1,3 +1,8 @@
+Release v0.5.3
+---------------------------
+
+- feat: support gpt-4o, and default to it
+
 Release v0.5.2
 ---------------------------
 
