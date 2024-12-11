@@ -186,9 +186,14 @@ class GPTBot(Bot):
                     print("Please install pysocks: pip install pysocks")
                     exit(1)
 
+    def _support_system_role(self):
+        if self.model.startswith("o1"):
+            return False
+        return True
+
     def get_messages(self):
         if self.prompt:
-            yield {"role": "system", "content": self.prompt}
+            yield {"role": "system" if self._support_system_role() else "user", "content": self.prompt}
         for h in self.history:
             yield {"role": "user", "content": h.question}
             if h.answer is not None:
