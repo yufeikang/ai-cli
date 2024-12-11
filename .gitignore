@@ -163,3 +163,5 @@ tests
 data
 
 .pdm.toml
+
+.DS_Store

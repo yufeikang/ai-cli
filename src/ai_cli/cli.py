@@ -6,15 +6,10 @@ import subprocess
 import sys
 import tempfile
 
-from ai_cli import compress_diff_content, git, init_logging
+from ai_cli import __version__, compress_diff_content, git, init_logging
 from ai_cli.bot import Bot, get_bot
 from ai_cli.setting import set_setting, setting, view_setting
 
-try:
-    import openai
-except ImportError:
-    print("Please install openai: pip install openai")
-    exit(1)
 try:
     from rich.console import Console
     from rich.live import Live
@@ -139,6 +134,8 @@ ask_parser.add_argument(
 )
 
 chat_parser = command_parser.add_parser("chat", help="chat with the assistant")
+command_parser.add_parser("version", help="show the version of the cli")
+command_parser.add_parser("help", help="show the help of the cli")
 
 translate_parser = command_parser.add_parser("translate", help="translate a text")
 translate_parser.add_argument("text", type=str, nargs="*", help="the text to translate")
@@ -196,6 +193,14 @@ review_parser.add_argument(
     nargs="?",
     default="HEAD",
     help="the target branch/version to compare with, example: master, develop, v1.0.0, a2c3d4e, HEAD",
+)
+review_parser.add_argument(
+    "--all",
+    "-a",
+    dest="all",
+    action="store_true",
+    default=False,
+    help="review all the files, default is to review one by one",
 )
 
 commit_parser = command_parser.add_parser("commit", help="let the assistant help you write a commit message")
@@ -343,6 +348,13 @@ def review_cmd():
     if not diff_files or len(diff_files) == 0:
         console.print("[bold red]No diff files found")
         exit(0)
+    if args.all:
+        diff_context = git.get_file_diff(diff_files, args.target)
+        diff_context = compress_diff_content(diff_context)
+        console.print(f"[bold blue]Reviewing all files: [{len(diff_context)}w][/bold blue]")
+        text = f"{diff_context} \n\n {setting.review_prompt.get_value()}"
+        ask(text, stream=stream)
+        return
     for f in diff_files:
         diff_context = git.get_file_diff(f, args.target)
         diff_context = compress_diff_content(diff_context)
@@ -434,6 +446,7 @@ CMD = {
     "commit": commit_cmd,
     "setting": setting_cmd,
     "help": parser.print_help,
+    "version": lambda: console.print(f"ai_cli version: {__version__}"),
 }
 
 

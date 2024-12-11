@@ -99,7 +99,7 @@ def get_change_files(target, exclude_files=None):
     if exclude_files is None:
         exclude_files = DIFF_EXCLUDE
     exclude_files_args = " ".join([":(exclude){}".format(f) for f in exclude_files])
-    cmd = ["git", "--no-pager", "diff", "--cached", "--name-only", target, exclude_files_args]
+    cmd = ["git", "--no-pager", "diff", target, "--cached", "--name-only", exclude_files_args]
     res, output = _run_command(cmd)
     if res != 0:
         logging.error("git command failed, cmd: {}".format(cmd))
@@ -128,7 +128,11 @@ def get_file_diff(path, target):
             _path = os.path.join(git_root, _path).split(current + "/")[1]
         return _path
 
-    cmd = ["git", "--no-pager", "diff", "--cached", "--", target]
+    cmd = ["git", "--no-pager", "diff"]
+    if target:
+        cmd.append(target)
+    cmd.append("--cached")
+    cmd.append("--")
     _path = _join_path(path)
     if _path:
         cmd.extend([_path] if isinstance(_path, str) else _path)
